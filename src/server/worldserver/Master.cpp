@@ -456,6 +456,29 @@ bool Master::_StartDB()
         return false;
     }
 
+    dbString = sConfigMgr->GetStringDefault("ZynDatabaseInfo", "");
+    if (dbString.empty())
+    {
+        TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Zyn database not specified in configuration file");
+        return false;
+    }
+
+    asyncThreads = uint8(sConfigMgr->GetIntDefault("ZynDatabase.WorkerThreads", 1));
+    if (asyncThreads < 1 || asyncThreads > 32)
+    {
+        TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Zyn database: invalid number of worker threads specified. "
+            "Please pick a value between 1 and 32.");
+        return false;
+    }
+
+    synchThreads = uint8(sConfigMgr->GetIntDefault("ZynDatabase.SynchThreads", 1));
+    ///- Initialize the zyn database
+    if (!ZynDatabase.Open(dbString, asyncThreads, synchThreads))
+    {
+        TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Cannot connect to zyn database %s", dbString.c_str());
+        return false;
+    }
+
     ///- Get the realm Id from the configuration file
     realmID = sConfigMgr->GetIntDefault("RealmID", 0);
     if (!realmID)

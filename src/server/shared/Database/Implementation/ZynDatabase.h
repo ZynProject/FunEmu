@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,29 +15,28 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// THIS FILE IS DEPRECATED
+#ifndef _ZYNDATABASE_H
+#define _ZYNDATABASE_H
 
-#ifndef TRINITY_SYSTEMCONFIG_H
-#define TRINITY_SYSTEMCONFIG_H
+#include "DatabaseWorkerPool.h"
+#include "MySQLConnection.h"
 
-#include "Define.h"
-#include "revision.h"
+class ZynDatabaseConnection : public MySQLConnection
+{
+    public:
+        //- Constructors for sync and async connections
+        ZynDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
+        ZynDatabaseConnection(ACE_Activation_Queue* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
 
-#define _PACKAGENAME "ZynProject"
+        //- Loads database type specific prepared statements
+        void DoPrepareStatements();
+};
 
-#if TRINITY_ENDIAN == TRINITY_BIGENDIAN
-# define _ENDIAN_STRING "big-endian"
-#else
-# define _ENDIAN_STRING "little-endian"
-#endif
+typedef DatabaseWorkerPool<ZynDatabaseConnection> ZynDatabaseWorkerPool;
 
-#if PLATFORM == PLATFORM_WINDOWS
-# ifdef _WIN64
-#  define _FULLVERSION _PACKAGENAME " rev. " VER_PRODUCTVERSION_STR " (Win64, " _BUILD_DIRECTIVE ")"
-# else
-#  define _FULLVERSION _PACKAGENAME " rev. " VER_PRODUCTVERSION_STR " (Win32, " _BUILD_DIRECTIVE ")"
-# endif
-#else
-#  define _FULLVERSION _PACKAGENAME " rev. " VER_PRODUCTVERSION_STR " (Unix, " _BUILD_DIRECTIVE ")"
-#endif
+enum ZynDatabaseStatements
+{
+    MAX_ZYNDATABASE_STATEMENTS
+};
+
 #endif
