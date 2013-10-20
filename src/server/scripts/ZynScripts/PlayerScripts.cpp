@@ -70,7 +70,19 @@ class ZynPlayerScripts: public PlayerScript
 
         void OnDuelEnd(Player* winner, Player* loser, DuelCompleteType type)
         {
+            if (type != DUEL_WON)
+                return;
 
+            Player* plr = winner;
+            for (uint8 i = 0; i < 2; i++)
+            {
+                if (plr->getPowerType() == POWER_MANA)
+                    plr->SetPower(POWER_MANA, winner->GetMaxPower(POWER_MANA));
+
+                plr->RemoveArenaSpellCooldowns();
+                plr->SetHealth(looser->GetMaxHealth());
+                plr = loser;
+            }
         }
 
         //Say / Yell
