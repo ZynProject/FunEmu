@@ -77,10 +77,10 @@ class ZynPlayerScripts: public PlayerScript
             for (uint8 i = 0; i < 2; i++)
             {
                 if (plr->getPowerType() == POWER_MANA)
-                    plr->SetPower(POWER_MANA, winner->GetMaxPower(POWER_MANA));
+                    plr->SetPower(POWER_MANA, plr->GetMaxPower(POWER_MANA));
 
                 plr->RemoveArenaSpellCooldowns();
-                plr->SetHealth(looser->GetMaxHealth());
+                plr->SetHealth(plr->GetMaxHealth());
                 plr = loser;
             }
         }
