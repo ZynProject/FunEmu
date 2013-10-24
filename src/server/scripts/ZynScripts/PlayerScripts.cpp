@@ -24,7 +24,7 @@ class ZynPlayerScripts: public PlayerScript
         void OnCreatureKill(Player* killer, Creature* killed)
         {
             CreatureSpecialRewards reward = sObjectMgr->GetSpecialReward(killed->GetEntry());
-            if (reward)
+            if (reward.type >= CSR_TYPE_TITLE && reward.type <= CSR_TYPE_ARENA)
             {
                 switch (reward.type)
                 {
