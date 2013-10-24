@@ -173,6 +173,14 @@ struct CreatureTemplate
 // Benchmarked: Faster than std::map (insert/find)
 typedef UNORDERED_MAP<uint32, CreatureTemplate> CreatureTemplateContainer;
 
+enum SpecialRewardTypes
+{
+    CSR_TYPE_TITLE      = 0,
+    CSR_TYPE_ITEM       = 1,
+    CSR_TYPE_HONOR      = 2,
+    CSR_TYPE_ARENA      = 3
+};
+
 // Represents max amount of expansions.
 /// @todo: Add MAX_EXPANSION constant.
 #define MAX_CREATURE_BASE_HP 3

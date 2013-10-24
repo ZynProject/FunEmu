@@ -510,6 +510,13 @@ struct RepSpilloverTemplate
     uint32 faction_rank[MAX_SPILLOVER_FACTIONS];
 };
 
+struct CreatureSpecialRewards
+{
+    uint8 type;
+    uint32 param1;
+    uint32 param2;
+};
+
 struct PointOfInterest
 {
     uint32 entry;
@@ -664,6 +671,8 @@ class ObjectMgr
         typedef UNORDERED_MAP<uint32, RepRewardRate > RepRewardRateContainer;
         typedef UNORDERED_MAP<uint32, ReputationOnKillEntry> RepOnKillContainer;
         typedef UNORDERED_MAP<uint32, RepSpilloverTemplate> RepSpilloverTemplateContainer;
+
+        typedef UNORDERED_MAP<uint32, CreatureSpecialRewards> CreatureSpecialRewardContainer;
 
         typedef UNORDERED_MAP<uint32, PointOfInterest> PointOfInterestContainer;
 
@@ -867,6 +876,13 @@ class ObjectMgr
         void LoadGameobjectQuestEnders();
         void LoadCreatureQuestStarters();
         void LoadCreatureQuestEnders();
+
+        void LoadCreatureSpecialRewards();
+
+        CreatureSpecialRewards GetSpecialReward(uint32 entry)
+        {
+            return _creatureSpecialReward[entry];
+        }
 
         QuestRelations* GetGOQuestRelationMap()
         {
@@ -1277,7 +1293,7 @@ class ObjectMgr
         RepRewardRateContainer _repRewardRateStore;
         RepOnKillContainer _repOnKillStore;
         RepSpilloverTemplateContainer _repSpilloverTemplateStore;
-
+        CreatureSpecialRewardContainer _creatureSpecialReward;
         GossipMenusContainer _gossipMenusStore;
         GossipMenuItemsContainer _gossipMenuItemsStore;
         PointOfInterestContainer _pointsOfInterestStore;

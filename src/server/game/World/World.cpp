@@ -1720,6 +1720,9 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Calendar data...");
     sCalendarMgr->LoadFromDB();
 
+    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Creature Special Rewards...");
+    sObjectMgr->LoadCreatureSpecialRewards();
+
     ///- Initialize game time and timers
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Initialize game time and timers");
     m_gameTime = time(NULL);

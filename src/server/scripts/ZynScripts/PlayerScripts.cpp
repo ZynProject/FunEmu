@@ -1,3 +1,6 @@
+#include "ObjectMgr.h"
+#include "Creature.h"
+
 class ZynPlayerScripts: public PlayerScript
 {
     public:
@@ -20,7 +23,34 @@ class ZynPlayerScripts: public PlayerScript
 
         void OnCreatureKill(Player* killer, Creature* killed)
         {
+            CreatureSpecialRewards reward = sObjectMgr->GetSpecialReward(killed->GetEntry());
+            if (reward)
+            {
+                switch (reward.type)
+                {
+                    case CSR_TYPE_TITLE:
+                    {
+                        CharTitlesEntry const* title = sCharTitlesStore.LookupEntry(reward.param1);
 
+                        if (!killer->HasTitle(title))
+                            killer->SetTitle(title);
+
+                        break;
+                    }
+
+                    case CSR_TYPE_ITEM:
+                        killer->AddItem(reward.param1, reward.param2);
+                        break;
+
+                    case CSR_TYPE_HONOR:
+                        killer->SetHonorPoints(killer->GetHonorPoints() + reward.param1);
+                        break;
+
+                    case CSR_TYPE_ARENA:
+                        killer->SetArenaPoints(killer->GetArenaPoints() + reward.param1);
+                        break;
+                }
+            }
         }
 
         void OnPlayerKilledByCreature(Creature* killer, Player* killed)
