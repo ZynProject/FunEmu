@@ -2178,8 +2178,26 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
         if (!(options & TELE_TO_NOT_LEAVE_COMBAT))
             CombatStop();
 
+        // new final coordinates
+        float final_x = x;
+        float final_y = y;
+        float final_z = z;
+        float final_o = orientation;
+
+        // Calculate final positions if on transport
+        if (m_transport)
+        {
+            float tx, ty, tz, to;
+            m_movementInfo.transport.pos.GetPosition(tx, ty, tz, to);
+
+            final_x = x + tx * std::cos(orientation) - ty * std::sin(orientation);
+            final_y = y + ty * std::cos(orientation) + tx * std::sin(orientation);
+            final_z = z + tz;
+            final_o = Position::NormalizeOrientation(orientation + m_movementInfo.transport.pos.GetOrientation());
+        }
+
         // this will be used instead of the current location in SaveToDB
-        m_teleport_dest = WorldLocation(mapid, x, y, z, orientation);
+        m_teleport_dest = WorldLocation(mapid, final_x, final_y, final_z, final_o);
         SetFallInformation(0, z);
 
         // code for finish transfer called in WorldSession::HandleMovementOpcodes()
@@ -2190,7 +2208,7 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
         {
             Position oldPos;
             GetPosition(&oldPos);
-            Relocate(x, y, z, orientation);
+            Relocate(final_x, final_y, final_z, final_o);
             SendTeleportAckPacket();
             SendTeleportPacket(oldPos); // this automatically relocates to oldPos in order to broadcast the packet in the right place
         }
@@ -2292,6 +2310,7 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
             float final_z = z;
             float final_o = orientation;
 
+            // Calculate final positions if on transport
             if (m_transport)
             {
                 float tx, ty, tz, to;
@@ -2304,7 +2323,7 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
             }
 
             m_teleport_dest = WorldLocation(mapid, final_x, final_y, final_z, final_o);
-            SetFallInformation(0, final_z);
+            SetFallInformation(0, z);
             // if the player is saved before worldportack (at logout for example)
             // this will be used instead of the current location in SaveToDB
 
@@ -15459,9 +15478,6 @@ bool Player::SatisfyQuestPreviousQuest(Quest const* qInfo, bool msg)
                 // can be start if only all quests in prev quest exclusive group completed and rewarded
                 ObjectMgr::ExclusiveQuestGroupsBounds range(sObjectMgr->mExclusiveQuestGroups.equal_range(qPrevInfo->GetExclusiveGroup()));
 
-                // always must be found if qPrevInfo->ExclusiveGroup != 0
-                ASSERT(range.first != range.second);
-
                 for (; range.first != range.second; ++range.first)
                 {
                     uint32 exclude_Id = range.first->second;
@@ -15494,9 +15510,6 @@ bool Player::SatisfyQuestPreviousQuest(Quest const* qInfo, bool msg)
                 // each-from-all exclusive group (< 0)
                 // can be start if only all quests in prev quest exclusive group active
                 ObjectMgr::ExclusiveQuestGroupsBounds range(sObjectMgr->mExclusiveQuestGroups.equal_range(qPrevInfo->GetExclusiveGroup()));
-
-                // always must be found if qPrevInfo->ExclusiveGroup != 0
-                ASSERT(range.first != range.second);
 
                 for (; range.first != range.second; ++range.first)
                 {
@@ -15664,9 +15677,6 @@ bool Player::SatisfyQuestExclusiveGroup(Quest const* qInfo, bool msg)
         return true;
 
     ObjectMgr::ExclusiveQuestGroupsBounds range(sObjectMgr->mExclusiveQuestGroups.equal_range(qInfo->GetExclusiveGroup()));
-
-    // always must be found if qInfo->ExclusiveGroup != 0
-    ASSERT(range.first != range.second);
 
     for (; range.first != range.second; ++range.first)
     {
