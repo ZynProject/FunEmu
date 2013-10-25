@@ -2866,3 +2866,17 @@ PacketSpoof.BanDuration = 86400
 
 #
 ###################################################################################################
+
+###################################################################################################
+# ZYN-PROJECT CUSTOM SETTINGS
+#
+#
+#    AutoSpellLearn.Enable
+#        Description: Learn spells automatically when player levels up
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AutoSpellLearn.Enable = 0
+
+#
+###################################################################################################

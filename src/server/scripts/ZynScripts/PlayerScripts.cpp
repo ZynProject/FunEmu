@@ -1,5 +1,6 @@
 #include "ObjectMgr.h"
 #include "Creature.h"
+#include "World.h"
 
 class ZynPlayerScripts: public PlayerScript
 {
@@ -60,7 +61,14 @@ class ZynPlayerScripts: public PlayerScript
 
         void OnLevelChanged(Player* player, uint8 newLevel)
         {
+            if (sWorld->getBoolConfig(CONFIG_AUTO_SPELL_LEARN_ENABLE))
+            {
+                AutoLearnSpellList spellList = sObjectMgr->GetSpellList(player->getClass(), newLevel);
+                AutoLearnSpellList::const_iterator itr;
 
+                for (itr = spellList.begin(); itr != spellList.end(); ++itr)
+                    player->learnSpell((*itr), false);
+            }
         }
 
         void OnFreeTalentPointsChanged(Player* player, uint32 points)

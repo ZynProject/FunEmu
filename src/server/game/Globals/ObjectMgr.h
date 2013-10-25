@@ -646,6 +646,26 @@ struct DungeonEncounter
 typedef std::list<DungeonEncounter const*> DungeonEncounterList;
 typedef UNORDERED_MAP<uint32, DungeonEncounterList> DungeonEncounterContainer;
 
+typedef std::list<uint32> AutoLearnSpellList;
+typedef UNORDERED_MAP<uint8, AutoLearnSpellList> SpellListLevel;
+
+struct sAutoSpellLearn
+{
+    SpellListLevel warrior;
+    SpellListLevel paladin;
+    SpellListLevel rogue;
+    SpellListLevel priest;
+    SpellListLevel mage;
+    SpellListLevel hunter;
+    SpellListLevel shaman;
+    SpellListLevel druid;
+    SpellListLevel deathknight;
+    SpellListLevel warlock;
+    SpellListLevel unk;
+};
+
+typedef sAutoSpellLearn AutoSpellLearn;
+
 class PlayerDumpReader;
 
 class ObjectMgr
@@ -744,6 +764,25 @@ class ObjectMgr
         uint32 GetPlayerTeamByGUID(uint64 guid) const;
         uint32 GetPlayerAccountIdByGUID(uint64 guid) const;
         uint32 GetPlayerAccountIdByPlayerName(std::string const& name) const;
+
+        AutoLearnSpellList GetSpellList(uint8 _class, uint8 _level)
+        {
+            switch (_class)
+            {
+                case CLASS_WARRIOR: return _plrAutoLearnByLevel.warrior[_level];
+                case CLASS_PALADIN: return _plrAutoLearnByLevel.paladin[_level];
+                case CLASS_HUNTER: return _plrAutoLearnByLevel.hunter[_level];
+                case CLASS_ROGUE: return _plrAutoLearnByLevel.rogue[_level];
+                case CLASS_PRIEST: return _plrAutoLearnByLevel.priest[_level];
+                case CLASS_DEATH_KNIGHT: return _plrAutoLearnByLevel.deathknight[_level];
+                case CLASS_SHAMAN: return _plrAutoLearnByLevel.shaman[_level];
+                case CLASS_DRUID: return _plrAutoLearnByLevel.druid[_level];
+                case CLASS_WARLOCK: return _plrAutoLearnByLevel.warlock[_level];
+                case CLASS_MAGE: return _plrAutoLearnByLevel.mage[_level];
+            }
+
+            return _plrAutoLearnByLevel.unk[_level];
+        }
 
         uint32 GetNearestTaxiNode(float x, float y, float z, uint32 mapid, uint32 team);
         void GetTaxiPath(uint32 source, uint32 destination, uint32 &path, uint32 &cost);
@@ -878,6 +917,7 @@ class ObjectMgr
         void LoadCreatureQuestEnders();
 
         void LoadCreatureSpecialRewards();
+        void LoadAutoSpellLearn();
 
         CreatureSpecialRewards GetSpecialReward(uint32 entry)
         {
@@ -1304,6 +1344,8 @@ class ObjectMgr
         QuestRelations _goQuestInvolvedRelations;
         QuestRelations _creatureQuestRelations;
         QuestRelations _creatureQuestInvolvedRelations;
+
+        AutoSpellLearn _plrAutoLearnByLevel;
 
         //character reserved names
         typedef std::set<std::wstring> ReservedNamesContainer;

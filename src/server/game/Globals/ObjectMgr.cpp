@@ -38,6 +38,7 @@
 #include "PoolMgr.h"
 #include "ReputationMgr.h"
 #include "ScriptMgr.h"
+#include "SharedDefines.h"
 #include "SpellAuras.h"
 #include "Spell.h"
 #include "SpellMgr.h"
@@ -8839,4 +8840,80 @@ void ObjectMgr::LoadCreatureSpecialRewards()
     while (result->NextRow());
 
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u creature special rewards in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+}
+
+void ObjectMgr::LoadAutoSpellLearn()
+{
+    uint32 oldMSTime = getMSTime();
+
+    QueryResult result = ZynDatabase.Query("SELECT class, level, spellId FROM player_learnspell_bylevel");
+
+    if (!result)
+    {
+        TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 spell definitions for leveling. DB table `player_learnspell_bylevel` is empty.");
+        return;
+    }
+
+    uint32 count = 0;
+
+    do
+    {
+        Field* fields = result->Fetch();
+        uint8 _class = fields[0].GetUInt8();
+        uint8 _level = fields[1].GetUInt8();
+        uint32 _spellId = fields[2].GetUInt32();
+
+        ++count;
+
+        switch (_class)
+        {
+            case CLASS_WARRIOR:
+                _plrAutoLearnByLevel.warrior[_level].push_back(_spellId);
+                break;
+
+            case CLASS_PALADIN:
+                _plrAutoLearnByLevel.paladin[_level].push_back(_spellId);
+                break;
+
+            case CLASS_HUNTER:
+                _plrAutoLearnByLevel.hunter[_level].push_back(_spellId);
+                break;
+
+            case CLASS_ROGUE:
+                _plrAutoLearnByLevel.rogue[_level].push_back(_spellId);
+                break;
+
+            case CLASS_PRIEST:
+                _plrAutoLearnByLevel.priest[_level].push_back(_spellId);
+                break;
+
+            case CLASS_DEATH_KNIGHT:
+                _plrAutoLearnByLevel.deathknight[_level].push_back(_spellId);
+                break;
+
+            case CLASS_SHAMAN:
+                _plrAutoLearnByLevel.shaman[_level].push_back(_spellId);
+                break;
+
+            case CLASS_DRUID:
+                _plrAutoLearnByLevel.druid[_level].push_back(_spellId);
+                break;
+
+            case CLASS_WARLOCK:
+                _plrAutoLearnByLevel.warlock[_level].push_back(_spellId);
+                break;
+
+            case CLASS_MAGE:
+                _plrAutoLearnByLevel.mage[_level].push_back(_spellId);
+                break;
+
+            default:
+                sLog->outError(LOG_FILTER_SQL, "Class %u referenced in 'player_learnspell_bylevel' doesnt exist in dbcs!", _class);
+                --count;
+                break;
+        }
+    }
+    while (result->NextRow());
+
+    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u player learnspell bylevel in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
