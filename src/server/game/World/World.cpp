@@ -1727,6 +1727,12 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Creature Special Rewards...");
     sObjectMgr->LoadCreatureSpecialRewards();
 
+    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Auto Spell Learn Table...");
+    sObjectMgr->LoadAutoSpellLearn();
+
+    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Area Custom Flags...");
+    sObjectMgr->LoadAreaCustomFlags();
+
     ///- Initialize game time and timers
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Initialize game time and timers");
     m_gameTime = time(NULL);

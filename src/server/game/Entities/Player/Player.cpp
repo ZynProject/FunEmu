@@ -1567,6 +1567,8 @@ void Player::Update(uint32 p_time)
 
     UpdateAfkReport(now);
 
+    UpdateAreaCustomFlags();
+
     if (IsCharmed())
         if (Unit* charmer = GetCharmer())
             if (charmer->GetTypeId() == TYPEID_UNIT && charmer->IsAlive())
@@ -26430,4 +26432,46 @@ Pet* Player::SummonPet(uint32 entry, float x, float y, float z, float ang, PetTy
     //ObjectAccessor::UpdateObjectVisibility(pet);
 
     return pet;
+}
+
+void Player::UpdateAreaCustomFlags()
+{
+    AreaCustomFlagContainer areaData = sObjectMgr->GetAreaCustomFlags();
+    AreaCustomFlagContainer::const_iterator itr;
+
+    for (itr = areaData.begin(); itr != areaData.end(); ++itr)
+    {
+        if (GetDistance((*itr).x, (*itr).y, (*itr).z) <= (*itr).radius)
+        {
+            switch ((*itr).flag)
+            {
+                case AREA_CUSTOM_SANCTUARY:
+                {
+                    RemoveByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_PVP);
+                    RemoveByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_FFA_PVP);
+                    RemoveByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_SANCTUARY);
+                    SetByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_SANCTUARY);
+                    break;
+                }
+
+                case AREA_CUSTOM_FFA:
+                {
+                    RemoveByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_PVP);
+                    RemoveByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_FFA_PVP);
+                    RemoveByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_SANCTUARY);
+                    SetByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_FFA_PVP);
+                    break;
+                }
+
+                case AREA_CUSTOM_PVP:
+                {
+                    RemoveByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_PVP);
+                    RemoveByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_FFA_PVP);
+                    RemoveByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_SANCTUARY);
+                    SetByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_PVP);
+                    break;
+                }
+            }
+        }
+    }
 }
