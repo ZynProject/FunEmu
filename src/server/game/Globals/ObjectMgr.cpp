@@ -8970,3 +8970,73 @@ void ObjectMgr::LoadAreaCustomFlags()
 
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u Area Custom Flags in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
+
+
+void ObjectMgr::LoadPlayerCustomStats()
+{
+	uint32 oldMSTime = getMSTime();
+
+	QueryResult result = ZynDatabase.Query("SELECT race,class,level,str,agi,sta,inte,spi FROM player_bonus_stats");
+
+	if(!result)
+	{
+		TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 Custom Player Stats. DB table `player_bonus_stats` is empty.");
+		return;
+	}
+
+	uint32 count = 0;
+
+	do
+	{
+		Field* fields = result->Fetch();
+
+            uint32 current_race = fields[0].GetUInt8();
+            if (current_race >= MAX_RACES)
+            {
+                TC_LOG_ERROR(LOG_FILTER_SQL, "Wrong race %u in `player_levelstats` table, ignoring.", current_race);
+                continue;
+            }
+
+            uint32 current_class = fields[1].GetUInt8();
+            if (current_class >= MAX_CLASSES)
+            {
+                TC_LOG_ERROR(LOG_FILTER_SQL, "Wrong class %u in `player_levelstats` table, ignoring.", current_class);
+                continue;
+            }
+
+            uint32 current_level = fields[2].GetUInt8();
+            if (current_level > sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
+            {
+                if (current_level > STRONG_MAX_LEVEL)        // hardcoded level maximum
+                    TC_LOG_ERROR(LOG_FILTER_SQL, "Wrong (> %u) level %u in `player_levelstats` table, ignoring.", STRONG_MAX_LEVEL, current_level);
+                else
+                {
+                    TC_LOG_INFO(LOG_FILTER_GENERAL, "Unused (> MaxPlayerLevel in worldserver.conf) level %u in `player_levelstats` table, ignoring.", current_level);
+                    ++count;                                // make result loading percent "expected" correct in case disabled detail mode for example.
+                }
+                continue;
+            }
+
+            if (PlayerInfo* info = _playerInfo[current_race][current_class])
+            {
+                if (!info->levelInfo)
+                    info->levelInfo = new PlayerLevelInfo[sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL)];
+
+                PlayerLevelInfo& levelInfo = info->levelInfo[current_level-1];
+                for (int i = 0; i < MAX_STATS; i++)
+					if(levelInfo.stats[i] > 0)
+					{
+						levelInfo.stats[i] += fields[i+3].GetUInt16();
+					}
+					else
+					{
+						levelInfo.stats[i] = fields[i+3].GetUInt16();
+					}
+            }
+
+            ++count;
+	}
+	while (result->NextRow());
+
+	TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u Custom Player Stats in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+ }

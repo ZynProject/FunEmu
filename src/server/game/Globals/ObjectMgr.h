@@ -935,6 +935,7 @@ class ObjectMgr
         void LoadCreatureSpecialRewards();
         void LoadAutoSpellLearn();
         void LoadAreaCustomFlags();
+		void LoadPlayerCustomStats();
 
         CreatureSpecialRewards GetSpecialReward(uint32 entry)
         {
