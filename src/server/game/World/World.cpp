@@ -1732,9 +1732,9 @@ void World::SetInitialWorldSettings()
 
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Area Custom Flags...");
     sObjectMgr->LoadAreaCustomFlags();
-	
-	TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Player Custom Stats...");
-	sObjectMgr->LoadPlayerCustomStats();
+    
+    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Player Custom Stats...");
+    sObjectMgr->LoadPlayerCustomStats();
 
     ///- Initialize game time and timers
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Initialize game time and timers");
