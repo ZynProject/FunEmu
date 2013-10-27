@@ -1,9 +1,3 @@
--- --------------------------------------------------------
--- Host:                         hwow.de
--- Server Version:               5.1.66-0+squeeze1 - (Debian)
--- Server Betriebssystem:        debian-linux-gnu
--- HeidiSQL Version:             8.1.0.4587
--- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8 */;
