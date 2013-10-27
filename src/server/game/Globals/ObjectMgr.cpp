@@ -8974,21 +8974,21 @@ void ObjectMgr::LoadAreaCustomFlags()
 
 void ObjectMgr::LoadPlayerCustomStats()
 {
-	uint32 oldMSTime = getMSTime();
+    uint32 oldMSTime = getMSTime();
 
-	QueryResult result = ZynDatabase.Query("SELECT race,class,level,str,agi,sta,inte,spi FROM player_bonus_stats");
+    QueryResult result = ZynDatabase.Query("SELECT race,class,level,str,agi,sta,inte,spi FROM player_bonus_stats");
 
-	if(!result)
-	{
-		TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 Custom Player Stats. DB table `player_bonus_stats` is empty.");
-		return;
-	}
+    if(!result)
+    {
+        TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 Custom Player Stats. DB table `player_bonus_stats` is empty.");
+        return;
+    }
 
-	uint32 count = 0;
+    uint32 count = 0;
 
-	do
-	{
-		Field* fields = result->Fetch();
+    do
+    {
+        Field* fields = result->Fetch();
 
             uint32 current_race = fields[0].GetUInt8();
             if (current_race >= MAX_RACES)
@@ -9024,19 +9024,19 @@ void ObjectMgr::LoadPlayerCustomStats()
 
                 PlayerLevelInfo& levelInfo = info->levelInfo[current_level-1];
                 for (int i = 0; i < MAX_STATS; i++)
-					if(levelInfo.stats[i] > 0)
-					{
-						levelInfo.stats[i] += fields[i+3].GetUInt16();
-					}
-					else
-					{
-						levelInfo.stats[i] = fields[i+3].GetUInt16();
-					}
+                    if(levelInfo.stats[i] > 0)
+                    {
+                        levelInfo.stats[i] += fields[i+3].GetUInt16();
+                    }
+                    else
+                    {
+                        levelInfo.stats[i] = fields[i+3].GetUInt16();
+                    }
             }
 
             ++count;
-	}
-	while (result->NextRow());
+    }
+    while (result->NextRow());
 
-	TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u Custom Player Stats in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u Custom Player Stats in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
  }
