@@ -2878,5 +2878,11 @@ PacketSpoof.BanDuration = 86400
 
 AutoSpellLearn.Enable = 0
 
+#   Donator.XPModifier
+#        Description: Granting Players with the RBAC Group "Donator" an experience modifier
+#        Default:    1.0 - (Same XP as everyone else)
+
+Donator.XPModifier = 1.0
+
 #
 ###################################################################################################
