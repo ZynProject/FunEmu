@@ -2878,8 +2878,14 @@ PacketSpoof.BanDuration = 86400
 
 AutoSpellLearn.Enable = 0
 
+#	Donator.XPModifierGroup
+#		Description: The RBAC Premission with the name "Feature: Higher XP". 
+#		Default:	 1000 - (Standard Permission from Zyn DB)
+
+Donator.XPModifierGroup = 1000
+
 #   Donator.XPModifier
-#        Description: Granting Players with the RBAC Group "Donator" an experience modifier
+#        Description: Granting Players with the RBAC Group set above an experience modifier
 #        Default:    1.0 - (Same XP as everyone else)
 
 Donator.XPModifier = 1.0

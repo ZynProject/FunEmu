@@ -89,9 +89,9 @@ class ZynPlayerScripts: public PlayerScript
         */
         void OnGiveXP(Player* player, uint32& amount, Unit* victim)
         {
-            if(player->GetSession()->GetRBACData()->GetName().compare("Donator")==0)
+            if (player->GetSession()->GetRBACData()->HasPermission(sWorld->getIntConfig(CONFIG_DONATOR_XPMODIFIER_GROUP)))
             {
-                amount = floor((amount*sWorld->getFloatConfig(CONFIG_DONATOR_XPMODIFIER))+0.5);   
+                amount = floor((amount*(sWorld->getFloatConfig(CONFIG_DONATOR_XPMODIFIER)))+0.5);   
             }
         }
         /*

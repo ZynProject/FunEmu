@@ -1255,6 +1255,7 @@ void World::LoadConfigSettings(bool reload)
 
     //Zyn Configs
     m_bool_configs[CONFIG_AUTO_SPELL_LEARN_ENABLE] = sConfigMgr->GetBoolDefault("AutoSpellLearn.Enable", false);
+    m_int_configs[CONFIG_DONATOR_XPMODIFIER_GROUP] = sConfigMgr->GetIntDefault("Donator.XPModifierGroup", 1000);
     m_float_configs[CONFIG_DONATOR_XPMODIFIER] = sConfigMgr->GetFloatDefault("Donator.XPModifier", 1.0);
 
     // call ScriptMgr if we're reloading the configuration
