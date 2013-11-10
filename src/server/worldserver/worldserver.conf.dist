@@ -2890,5 +2890,17 @@ Donator.XPModifierGroup = 1000
 
 Donator.XPModifier = 1.0
 
+#	Donator.RepModifierGroup
+#		Description: The RBAC Premission with the name "Feature: Higher Reputation". 
+#		Default:	 1001 - (Standard Permission from Zyn DB)
+
+Donator.RepModifierGroup = 1001
+
+#   Donator.XPModifier
+#        Description: Granting Players with the RBAC Group set above an reputation modifier
+#        Default:    1.0 - (Same Reputation as everyone else)
+
+Donator.XPModifier = 1.0
+
 #
 ###################################################################################################

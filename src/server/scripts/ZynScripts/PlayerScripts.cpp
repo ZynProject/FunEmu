@@ -91,15 +91,23 @@ class ZynPlayerScripts: public PlayerScript
         {
             if (player->GetSession()->GetRBACData()->HasPermission(sWorld->getIntConfig(CONFIG_DONATOR_XPMODIFIER_GROUP)))
             {
-                amount = floor((amount*(sWorld->getFloatConfig(CONFIG_DONATOR_XPMODIFIER)))+0.5);   
+                amount = floor((amount*(sWorld->getFloatConfig(CONFIG_DONATOR_XPMODIFIER))) + 0.5);   
             }
         }
-        /*
+
+        
         void OnReputationChange(Player* player, uint32 factionID, int32& standing, bool incremental)
         {
-
+            if (incremental)
+            {
+                if (player->GetSession()->GetRBACData()->HasPermission(sWorld->getIntConfig(CONFIG_DONATOR_REPMODIFIER_GROUP)))
+                {
+                    standing = floor((standing*(sWorld->getFloatConfig(CONFIG_DONATOR_REPMODIFIER))) + 0.5);
+                }
+            }
         }
-
+        
+        /*
         void OnDuelRequest(Player* target, Player* challenger)
         {
 

@@ -1,0 +1,1 @@
+INSERT INTO `accounts`.`rbac_permissions` (`id`, `name`) VALUES (1001, 'Feature: Higher Reputation');

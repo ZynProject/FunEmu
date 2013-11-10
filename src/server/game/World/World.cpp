@@ -1257,6 +1257,8 @@ void World::LoadConfigSettings(bool reload)
     m_bool_configs[CONFIG_AUTO_SPELL_LEARN_ENABLE] = sConfigMgr->GetBoolDefault("AutoSpellLearn.Enable", false);
     m_int_configs[CONFIG_DONATOR_XPMODIFIER_GROUP] = sConfigMgr->GetIntDefault("Donator.XPModifierGroup", 1000);
     m_float_configs[CONFIG_DONATOR_XPMODIFIER] = sConfigMgr->GetFloatDefault("Donator.XPModifier", 1.0);
+    m_int_configs[CONFIG_DONATOR_REPMODIFIER_GROUP] = sConfigMgr->GetIntDefault("Donator.RepModifierGroup", 1001);
+    m_float_configs[CONFIG_DONATOR_REPMODIFIER] = sConfigMgr->GetFloatDefault("Donator.RepModifier", 1.0);
 
     // call ScriptMgr if we're reloading the configuration
     if (reload)
