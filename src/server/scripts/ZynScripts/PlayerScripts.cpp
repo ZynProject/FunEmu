@@ -22,7 +22,7 @@ class ZynPlayerScripts: public PlayerScript
         {
 
         }
-        */
+        
         void OnCreatureKill(Player* killer, Creature* killed)
         {
             CreatureSpecialRewards reward = sObjectMgr->GetSpecialReward(killed->GetEntry());
@@ -54,7 +54,7 @@ class ZynPlayerScripts: public PlayerScript
                 }
             }
         }
-        /*
+        
         void OnPlayerKilledByCreature(Creature* killer, Player* killed)
         {
 
@@ -89,22 +89,13 @@ class ZynPlayerScripts: public PlayerScript
         */
         void OnGiveXP(Player* player, uint32& amount, Unit* victim)
         {
-            if (player->GetSession()->GetRBACData()->HasPermission(sWorld->getIntConfig(CONFIG_DONATOR_XPMODIFIER_GROUP)))
-            {
-                amount = floor((amount*(sWorld->getFloatConfig(CONFIG_DONATOR_XPMODIFIER))) + 0.5);   
-            }
+            
         }
 
         
         void OnReputationChange(Player* player, uint32 factionID, int32& standing, bool incremental)
         {
-            if (incremental)
-            {
-                if (player->GetSession()->GetRBACData()->HasPermission(sWorld->getIntConfig(CONFIG_DONATOR_REPMODIFIER_GROUP)))
-                {
-                    standing = floor((standing*(sWorld->getFloatConfig(CONFIG_DONATOR_REPMODIFIER))) + 0.5);
-                }
-            }
+            
         }
         
         /*

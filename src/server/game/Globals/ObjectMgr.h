@@ -155,6 +155,19 @@ struct AreaCustomFlagTPL
 
 typedef std::list<AreaCustomFlagTPL> AreaCustomFlagContainer;
 
+struct DonatorPortTPL
+{
+    float position_x;
+    float position_y;
+    float position_z;
+    float orientation;
+    uint32 mapId;
+    std::string name;
+    std::wstring wnameLow;
+};
+
+typedef UNORDERED_MAP<uint32, DonatorPortTPL> DonatorPortContainer;
+
 enum ScriptsType
 {
     SCRIPTS_FIRST = 1,
@@ -800,6 +813,11 @@ class ObjectMgr
             return _areaCustomFlags;
         }
 
+        DonatorPortContainer GetDonatorPort()
+        {
+            return _donatorPort;
+        }
+
         uint32 GetNearestTaxiNode(float x, float y, float z, uint32 mapid, uint32 team);
         void GetTaxiPath(uint32 source, uint32 destination, uint32 &path, uint32 &cost);
         uint32 GetTaxiMountDisplayId(uint32 id, uint32 team, bool allowed_alt_team = false);
@@ -936,6 +954,7 @@ class ObjectMgr
         void LoadAutoSpellLearn();
         void LoadAreaCustomFlags();
         void LoadPlayerCustomStats();
+        void LoadDonatorPort();
 
         CreatureSpecialRewards GetSpecialReward(uint32 entry)
         {
@@ -1234,6 +1253,13 @@ class ObjectMgr
             if (itr == _gameTeleStore.end()) return NULL;
             return &itr->second;
         }
+        DonatorPortTPL const* GetDonatorPort(uint32 id) const
+        {
+            DonatorPortContainer::const_iterator itr = _donatorPort.find(id);
+            if (itr == _donatorPort.end()) return NULL;
+            return &itr->second;
+        }
+        DonatorPortTPL const* GetDonatorPort(std::string const& name) const;
         GameTele const* GetGameTele(std::string const& name) const;
         GameTele const* GetGameTeleExactName(std::string const& name) const;
         GameTeleContainer const& GetGameTeleMap() const { return _gameTeleStore; }
@@ -1357,6 +1383,7 @@ class ObjectMgr
         GossipMenuItemsContainer _gossipMenuItemsStore;
         PointOfInterestContainer _pointsOfInterestStore;
         AreaCustomFlagContainer _areaCustomFlags;
+        DonatorPortContainer _donatorPort;
 
         QuestPOIContainer _questPOIStore;
 

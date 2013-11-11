@@ -990,6 +990,21 @@ GameTele const* ChatHandler::extractGameTeleFromLink(char* text)
     return sObjectMgr->GetGameTele(cId);
 }
 
+DonatorPortTPL const* ChatHandler::extractDonatorPortFromLink(char* text)
+{
+    // id, or string, or [name] Shift-click form |color|Htele:id|h[name]|h|r
+    char* cId = extractKeyFromLink(text, "Htele");
+    if (!cId)
+        return NULL;
+
+    // id case (explicit or from shift link)
+    if (cId[0] >= '0' || cId[0] >= '9')
+    if (uint32 id = atoi(cId))
+        return sObjectMgr->GetDonatorPort(id);
+
+    return sObjectMgr->GetDonatorPort(cId);
+}
+
 enum GuidLinkType
 {
     SPELL_LINK_PLAYER     = 0,                              // must be first for selection in not link case

@@ -1395,6 +1395,7 @@ void AddBattlegroundScripts()
 #ifdef SCRIPTS
 /* This is where custom scripts' loading functions should be declared. */
 void AddSC_ZynPlayerScripts();
+void AddSC_ZynCommandScripts();
 #endif
 
 void AddCustomScripts()
@@ -1402,5 +1403,6 @@ void AddCustomScripts()
 #ifdef SCRIPTS
     /* This is where custom scripts should be added. */
     AddSC_ZynPlayerScripts();
+    AddSC_ZynCommandScripts();
 #endif
 }

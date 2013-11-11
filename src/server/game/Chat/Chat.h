@@ -112,6 +112,7 @@ class ChatHandler
         uint32    extractSpellIdFromLink(char* text);
         uint64    extractGuidFromLink(char* text);
         GameTele const* extractGameTeleFromLink(char* text);
+        DonatorPortTPL const* extractDonatorPortFromLink(char* text);
         bool GetPlayerGroupAndGUIDByName(const char* cname, Player* &player, Group* &group, uint64 &guid, bool offline = false);
         std::string extractPlayerNameFromLink(char* text);
         // select by arg (name/link) or in-game selection online/offline player

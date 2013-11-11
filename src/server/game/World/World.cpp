@@ -1740,6 +1740,9 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Player Custom Stats...");
     sObjectMgr->LoadPlayerCustomStats();
 
+    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Donator Port Locations...");
+    sObjectMgr->LoadDonatorPort();
+
     ///- Initialize game time and timers
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Initialize game time and timers");
     m_gameTime = time(NULL);

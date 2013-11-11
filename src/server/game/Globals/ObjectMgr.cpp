@@ -7809,6 +7809,29 @@ GameTele const* ObjectMgr::GetGameTele(const std::string& name) const
     return alt;
 }
 
+DonatorPortTPL const* ObjectMgr::GetDonatorPort(const std::string& name) const
+{
+    // explicit name case
+    std::wstring wname;
+    if (!Utf8toWStr(name, wname))
+        return NULL;
+
+    // converting string that we try to find to lower case
+    wstrToLower(wname);
+
+    // Alternative first GameTele what contains wnameLow as substring in case no GameTele location found
+    const DonatorPortTPL* alt = NULL;
+    for (DonatorPortContainer::const_iterator itr = _donatorPort.begin(); itr != _donatorPort.end(); ++itr)
+    {
+        if (itr->second.wnameLow == wname)
+            return &itr->second;
+        else if (alt == NULL && itr->second.wnameLow.find(wname) != std::wstring::npos)
+            alt = &itr->second;
+    }
+
+    return alt;
+}
+
 GameTele const* ObjectMgr::GetGameTeleExactName(const std::string& name) const
 {
     // explicit name case
@@ -8971,6 +8994,54 @@ void ObjectMgr::LoadAreaCustomFlags()
     TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u Area Custom Flags in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
+
+void ObjectMgr::LoadDonatorPort()
+{
+    uint32 oldMSTime = getMSTime();
+
+    QueryResult result = ZynDatabase.Query("SELECT id, position_x, position_y, position_z, orientation, map, name FROM donator_port");
+
+    if (!result)
+    {
+        TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 Donator Port Locations. DB table `donator_port` is empty.");
+        return;
+    }
+
+    uint32 count = 0;
+
+    do
+    {
+        Field* fields = result->Fetch();
+        uint32 id = fields[0].GetUInt32();
+        DonatorPortTPL container;
+        container.position_x = fields[1].GetFloat();
+        container.position_y = fields[2].GetFloat();
+        container.position_z = fields[3].GetFloat();
+        container.orientation = fields[4].GetFloat();
+        container.mapId = fields[5].GetUInt32();
+        container.name = fields[6].GetString();
+
+        if (!MapManager::IsValidMapCoord(container.mapId, container.position_x, container.position_y, container.position_z, container.orientation))
+        {
+            TC_LOG_ERROR(LOG_FILTER_SQL, "Wrong position for id %u (name: %s) in `game_tele` table, ignoring.", id, container.name.c_str());
+            continue;
+        }
+
+        if (!Utf8toWStr(container.name, container.wnameLow))
+        {
+            TC_LOG_ERROR(LOG_FILTER_SQL, "Wrong UTF8 name for id %u in `game_tele` table, ignoring.", id);
+            continue;
+        }
+
+        wstrToLower(container.wnameLow);
+
+        _donatorPort[id] = container;
+
+        ++count;
+    } while (result->NextRow());
+
+    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u Donator Port Locations in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+}
 
 void ObjectMgr::LoadPlayerCustomStats()
 {

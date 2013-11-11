@@ -2985,6 +2985,8 @@ void Player::GiveXP(uint32 xp, Unit* victim, float group_rate)
     // RaF does NOT stack with rested experience
     if (recruitAFriend)
         bonus_xp = 2 * xp; // xp + bonus_xp must add up to 3 * xp for RaF; calculation for quests done client-side
+    if (this->GetSession()->GetRBACData()->HasPermission(rbac::RBAC_PERM_FEATURE_XPMODIFIER))
+       bonus_xp += (xp * (sWorld->getFloatConfig(CONFIG_DONATOR_XPMODIFIER) - 1));
     else
         bonus_xp = victim ? GetXPRestBonus(xp) : 0; // XP resting bonus
 
@@ -6988,6 +6990,8 @@ int32 Player::CalculateReputationGain(ReputationSource source, uint32 creatureOr
 
     if (source != REPUTATION_SOURCE_SPELL && GetsRecruitAFriendBonus(false))
         percent *= 1.0f + sWorld->getRate(RATE_REPUTATION_RECRUIT_A_FRIEND_BONUS);
+    if (source != REPUTATION_SOURCE_SPELL && this->GetSession()->GetRBACData()->HasPermission(rbac::RBAC_PERM_FEATURE_REPMODIFIER))
+        percent *= sWorld->getFloatConfig(CONFIG_DONATOR_REPMODIFIER);
 
     return CalculatePct(rep, percent);
 }

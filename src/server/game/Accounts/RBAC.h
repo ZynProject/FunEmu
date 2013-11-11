@@ -680,6 +680,10 @@ enum RBACPermissions
     RBAC_PERM_COMMAND_WP_SHOW                                = 774,
 
     // custom permissions 1000+
+    RBAC_PERM_FEATURE_XPMODIFIER                             = 1000,
+    RBAC_PERM_FEATURE_REPMODIFIER                            = 1001,
+    RBAC_PERM_COMMAND_DONATOR                                = 1200,
+    RBAC_PERM_COMMAND_DONATOR_PORT                           = 1201,
     RBAC_PERM_MAX
 };
 
