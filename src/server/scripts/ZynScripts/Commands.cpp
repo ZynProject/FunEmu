@@ -71,6 +71,7 @@ public:
             return false;
         }
         //saved player
+        
         me->SaveRecallPosition();
         me->TeleportTo(tele->mapId, tele->position_x, tele->position_y, tele->position_z, tele->orientation);
         return true;

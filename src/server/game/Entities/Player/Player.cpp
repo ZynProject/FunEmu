@@ -6128,6 +6128,10 @@ bool Player::UpdateCraftSkill(uint32 spellid)
             }
 
             uint32 craft_skill_gain = sWorld->getIntConfig(CONFIG_SKILL_GAIN_CRAFTING);
+            if (this->GetSession()->GetRBACData()->HasPermission(rbac::RBAC_PERM_FEAUTURE_CRAFTMODIFIER))
+            {
+                craft_skill_gain += sWorld->getIntConfig(CONFIG_DONATOR_CRAFTMODIFIER);
+            }
 
             return UpdateSkillPro(_spell_idx->second->skillId, SkillGainChance(SkillValue,
                 _spell_idx->second->max_value,
