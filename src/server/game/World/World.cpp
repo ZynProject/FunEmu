@@ -1727,19 +1727,19 @@ void World::SetInitialWorldSettings()
     TC_LOG_INFO("server.loading", "Loading Calendar data...");
     sCalendarMgr->LoadFromDB();
 
-    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Creature Special Rewards...");
+    TC_LOG_INFO("server.loading", "Loading Creature Special Rewards...");
     sObjectMgr->LoadCreatureSpecialRewards();
 
-    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Auto Spell Learn Table...");
+    TC_LOG_INFO("server.loading", "Loading Auto Spell Learn Table...");
     sObjectMgr->LoadAutoSpellLearn();
 
-    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Area Custom Flags...");
+    TC_LOG_INFO("server.loading", "Loading Area Custom Flags...");
     sObjectMgr->LoadAreaCustomFlags();
     
-    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Player Custom Stats...");
+    TC_LOG_INFO("server.loading", "Loading Player Custom Stats...");
     sObjectMgr->LoadPlayerCustomStats();
 
-    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, "Loading Donator Port Locations...");
+    TC_LOG_INFO("server.loading", "Loading Donator Port Locations...");
     sObjectMgr->LoadDonatorPort();
 
     ///- Initialize game time and timers

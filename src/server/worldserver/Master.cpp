@@ -459,14 +459,14 @@ bool Master::_StartDB()
     dbString = sConfigMgr->GetStringDefault("ZynDatabaseInfo", "");
     if (dbString.empty())
     {
-        TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Zyn database not specified in configuration file");
+        TC_LOG_ERROR("server.worldserver", "Zyn database not specified in configuration file");
         return false;
     }
 
     asyncThreads = uint8(sConfigMgr->GetIntDefault("ZynDatabase.WorkerThreads", 1));
     if (asyncThreads < 1 || asyncThreads > 32)
     {
-        TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Zyn database: invalid number of worker threads specified. "
+        TC_LOG_ERROR("server.worldserver", "Zyn database: invalid number of worker threads specified. "
             "Please pick a value between 1 and 32.");
         return false;
     }
@@ -475,7 +475,7 @@ bool Master::_StartDB()
     ///- Initialize the zyn database
     if (!ZynDatabase.Open(dbString, asyncThreads, synchThreads))
     {
-        TC_LOG_ERROR(LOG_FILTER_WORLDSERVER, "Cannot connect to zyn database %s", dbString.c_str());
+        TC_LOG_ERROR("server.worldserver", "Cannot connect to zyn database %s", dbString.c_str());
         return false;
     }
 

@@ -8863,7 +8863,7 @@ void ObjectMgr::LoadCreatureSpecialRewards()
 
     if (!result)
     {
-        TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 creature special rewards. DB table `creature_special_rewards` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 creature special rewards. DB table `creature_special_rewards` is empty.");
         return;
     }
 
@@ -8881,7 +8881,7 @@ void ObjectMgr::LoadCreatureSpecialRewards()
     }
     while (result->NextRow());
 
-    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u creature special rewards in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u creature special rewards in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void ObjectMgr::LoadAutoSpellLearn()
@@ -8892,7 +8892,7 @@ void ObjectMgr::LoadAutoSpellLearn()
 
     if (!result)
     {
-        TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 spell definitions for leveling. DB table `player_learnspell_bylevel` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 spell definitions for leveling. DB table `player_learnspell_bylevel` is empty.");
         return;
     }
 
@@ -8950,14 +8950,14 @@ void ObjectMgr::LoadAutoSpellLearn()
                 break;
 
             default:
-                sLog->outError(LOG_FILTER_SQL, "Class %u referenced in 'player_learnspell_bylevel' doesnt exist in dbcs!", _class);
+                sLog->outError("sql.sql", "Class %u referenced in 'player_learnspell_bylevel' doesnt exist in dbcs!", _class);
                 --count;
                 break;
         }
     }
     while (result->NextRow());
 
-    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u player learnspell bylevel in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u player learnspell bylevel in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void ObjectMgr::LoadAreaCustomFlags()
@@ -8968,7 +8968,7 @@ void ObjectMgr::LoadAreaCustomFlags()
 
     if (!result)
     {
-        TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 Area Custom Flags. DB table `area_custom_flag` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 Area Custom Flags. DB table `area_custom_flag` is empty.");
         return;
     }
 
@@ -8991,7 +8991,7 @@ void ObjectMgr::LoadAreaCustomFlags()
     }
     while (result->NextRow());
 
-    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u Area Custom Flags in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u Area Custom Flags in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 
@@ -9003,7 +9003,7 @@ void ObjectMgr::LoadDonatorPort()
 
     if (!result)
     {
-        TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 Donator Port Locations. DB table `donator_port` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 Donator Port Locations. DB table `donator_port` is empty.");
         return;
     }
 
@@ -9023,13 +9023,13 @@ void ObjectMgr::LoadDonatorPort()
 
         if (!MapManager::IsValidMapCoord(container.mapId, container.position_x, container.position_y, container.position_z, container.orientation))
         {
-            TC_LOG_ERROR(LOG_FILTER_SQL, "Wrong position for id %u (name: %s) in `game_tele` table, ignoring.", id, container.name.c_str());
+            TC_LOG_ERROR("sql.sql", "Wrong position for id %u (name: %s) in `game_tele` table, ignoring.", id, container.name.c_str());
             continue;
         }
 
         if (!Utf8toWStr(container.name, container.wnameLow))
         {
-            TC_LOG_ERROR(LOG_FILTER_SQL, "Wrong UTF8 name for id %u in `game_tele` table, ignoring.", id);
+            TC_LOG_ERROR("sql.sql", "Wrong UTF8 name for id %u in `game_tele` table, ignoring.", id);
             continue;
         }
 
@@ -9040,7 +9040,7 @@ void ObjectMgr::LoadDonatorPort()
         ++count;
     } while (result->NextRow());
 
-    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u Donator Port Locations in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u Donator Port Locations in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void ObjectMgr::LoadPlayerCustomStats()
@@ -9051,7 +9051,7 @@ void ObjectMgr::LoadPlayerCustomStats()
 
     if(!result)
     {
-        TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded 0 Custom Player Stats. DB table `player_bonus_stats` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 Custom Player Stats. DB table `player_bonus_stats` is empty.");
         return;
     }
 
@@ -9064,14 +9064,14 @@ void ObjectMgr::LoadPlayerCustomStats()
             uint32 current_race = fields[0].GetUInt8();
             if (current_race >= MAX_RACES)
             {
-                TC_LOG_ERROR(LOG_FILTER_SQL, "Wrong race %u in `player_levelstats` table, ignoring.", current_race);
+                TC_LOG_ERROR("sql.sql", "Wrong race %u in `player_levelstats` table, ignoring.", current_race);
                 continue;
             }
 
             uint32 current_class = fields[1].GetUInt8();
             if (current_class >= MAX_CLASSES)
             {
-                TC_LOG_ERROR(LOG_FILTER_SQL, "Wrong class %u in `player_levelstats` table, ignoring.", current_class);
+                TC_LOG_ERROR("sql.sql", "Wrong class %u in `player_levelstats` table, ignoring.", current_class);
                 continue;
             }
 
@@ -9079,10 +9079,10 @@ void ObjectMgr::LoadPlayerCustomStats()
             if (current_level > sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
             {
                 if (current_level > STRONG_MAX_LEVEL)        // hardcoded level maximum
-                    TC_LOG_ERROR(LOG_FILTER_SQL, "Wrong (> %u) level %u in `player_levelstats` table, ignoring.", STRONG_MAX_LEVEL, current_level);
+                    TC_LOG_ERROR("sql.sql", "Wrong (> %u) level %u in `player_levelstats` table, ignoring.", STRONG_MAX_LEVEL, current_level);
                 else
                 {
-                    TC_LOG_INFO(LOG_FILTER_GENERAL, "Unused (> MaxPlayerLevel in worldserver.conf) level %u in `player_levelstats` table, ignoring.", current_level);
+                    TC_LOG_INFO("misc", "Unused (> MaxPlayerLevel in worldserver.conf) level %u in `player_levelstats` table, ignoring.", current_level);
                     ++count;                                // make result loading percent "expected" correct in case disabled detail mode for example.
                 }
                 continue;
@@ -9109,5 +9109,5 @@ void ObjectMgr::LoadPlayerCustomStats()
     }
     while (result->NextRow());
 
-    TC_LOG_INFO(LOG_FILTER_SERVER_LOADING, ">> Loaded %u Custom Player Stats in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u Custom Player Stats in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
  }
