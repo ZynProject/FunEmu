@@ -8950,7 +8950,7 @@ void ObjectMgr::LoadAutoSpellLearn()
                 break;
 
             default:
-                sLog->outError("sql.sql", "Class %u referenced in 'player_learnspell_bylevel' doesnt exist in dbcs!", _class);
+                TC_LOG_INFO("sql.sql", "Class %u referenced in 'player_learnspell_bylevel' doesnt exist in dbcs!", _class);
                 --count;
                 break;
         }
