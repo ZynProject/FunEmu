@@ -15,6 +15,7 @@ public:
         static ChatCommand DonatorCommandTable[] =
         {
             { "port", rbac::RBAC_PERM_COMMAND_DONATOR_PORT, false, &HandleZynPortCommand, "", NULL },
+            { "craftbonus", rbac::RBAC_PERM_COMMAND_DONATOR_CRAFTBONUS, false, &HandleZynCraftBonusCommand, "", NULL },
             { NULL, 0, false, NULL, "", NULL }
         };
         static ChatCommand ZynCommandTable[] =
@@ -74,6 +75,34 @@ public:
         
         me->SaveRecallPosition();
         me->TeleportTo(tele->mapId, tele->position_x, tele->position_y, tele->position_z, tele->orientation);
+        return true;
+    }
+    static bool HandleZynCraftBonusCommand(ChatHandler* handler,const char* args)
+    {
+        Player* me = handler->GetSession()->GetPlayer();
+        uint32 newSkill = 0;
+        for (uint32 i = 1; i < sSkillLineStore.GetNumRows(); ++i)
+        {
+            SkillLineEntry const *SkillInfo = sSkillLineStore.LookupEntry(i);
+            if (!SkillInfo)
+                continue;
+
+            if (SkillInfo->categoryId == SKILL_CATEGORY_SECONDARY)
+                continue;
+
+            if ((SkillInfo->categoryId != SKILL_CATEGORY_PROFESSION) || !SkillInfo->canLink)
+                continue;
+
+            const uint32 skillID = SkillInfo->id;
+            if (me->HasSkill(skillID))
+            {
+                newSkill = me->GetPureSkillValue(skillID) + 50;
+                if (newSkill > me->GetPureMaxSkillValue(skillID)){ newSkill = me->GetPureMaxSkillValue(skillID); }
+                me->SetSkill(skillID, me->GetSkillStep(skillID), newSkill, me->GetPureMaxSkillValue(skillID));
+            }
+                
+        }
+        me->GetSession()->GetRBACData()->RevokePermission(rbac::RBAC_PERM_COMMAND_DONATOR_CRAFTBONUS, -1);
         return true;
     }
 };

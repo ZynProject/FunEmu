@@ -685,6 +685,7 @@ enum RBACPermissions
     RBAC_PERM_FEATURE_CRAFTMODIFIER                          = 1002,
     RBAC_PERM_COMMAND_DONATOR                                = 1200,
     RBAC_PERM_COMMAND_DONATOR_PORT                           = 1201,
+    RBAC_PERM_COMMAND_DONATOR_CRAFTBONUS                     = 1202,
     RBAC_PERM_MAX
 };
 

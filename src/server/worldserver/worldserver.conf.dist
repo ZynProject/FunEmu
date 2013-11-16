@@ -2837,22 +2837,28 @@ PacketSpoof.BanDuration = 86400
 AutoSpellLearn.Enable = 0
 
 #   Donator.XPModifier
-#        Description: Granting Players with the RBAC Group set above an experience modifier
+#        Description: Granting Players with the RBAC Permission 1000 an experience modifier
 #        Default:    1.0 - (Same XP as everyone else)
 
 Donator.XPModifier = 1.0
 
 #   Donator.XPModifier
-#        Description: Granting Players with the RBAC Group set above an reputation modifier
+#        Description: Granting Players with the RBAC Permission 1001 an reputation modifier
 #        Default:    1.0 - (Same Reputation as everyone else)
 
 Donator.XPModifier = 1.0
 
 #   Donator.CraftModifier
-#        Description: Granting Players with the RBAC Group set above an reputation modifier
+#        Description: Granting Players with the RBAC Permission 1002 an Craft-skill-up modifier
 #        Default:    0 - (Same Craft Gain as everyone else)
 
 Donator.CraftModifier = 0
+
+#   Donator.CraftBonus
+#        Description: Granting Players with the RBAC Permission 1202 an one time Profession Bonus with the command .donator craftbonus
+#        Default:    75 - (One skill level full)
+
+Donator.CraftBonus = 75
 
 #
 ###################################################################################################

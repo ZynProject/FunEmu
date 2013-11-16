@@ -1258,6 +1258,7 @@ void World::LoadConfigSettings(bool reload)
     m_float_configs[CONFIG_DONATOR_XPMODIFIER] = sConfigMgr->GetFloatDefault("Donator.XPModifier", 1.0);
     m_float_configs[CONFIG_DONATOR_REPMODIFIER] = sConfigMgr->GetFloatDefault("Donator.RepModifier", 1.0);
     m_int_configs[CONFIG_DONATOR_CRAFTMODIFIER] = sConfigMgr->GetIntDefault("Donator.CraftModifier", 0);
+    m_int_configs[CONFIG_DONATOR_CRAFTBONUS] = sConfigMgr->GetIntDefault("Donator.CraftBonus", 75);
 
     // call ScriptMgr if we're reloading the configuration
     if (reload)
