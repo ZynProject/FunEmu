@@ -2965,8 +2965,6 @@ void Player::GiveXP(uint32 xp, Unit* victim, float group_rate)
 
     uint8 level = getLevel();
 
-    sScriptMgr->OnGivePlayerXP(this, xp, victim);
-
     // Favored experience increase START
     uint32 zone = GetZoneId();
     float favored_exp_mult = 0;
@@ -2986,11 +2984,13 @@ void Player::GiveXP(uint32 xp, Unit* victim, float group_rate)
     if (recruitAFriend)
         bonus_xp = 2 * xp; // xp + bonus_xp must add up to 3 * xp for RaF; calculation for quests done client-side
     if (this->GetSession()->GetRBACData()->HasPermission(rbac::RBAC_PERM_FEATURE_XPMODIFIER))
-       bonus_xp += (xp * (sWorld->getFloatConfig(CONFIG_DONATOR_XPMODIFIER) - 1));
+       bonus_xp += (xp * (sWorld->getFloatConfig(CONFIG_DONATOR_XPMODIFIER)));
     else
         bonus_xp = victim ? GetXPRestBonus(xp) : 0; // XP resting bonus
-
+   
     SendLogXPGain(xp, victim, bonus_xp, recruitAFriend, group_rate);
+
+    sScriptMgr->OnGivePlayerXP(this, xp, victim);
 
     uint32 curXP = GetUInt32Value(PLAYER_XP);
     uint32 nextLvlXP = GetUInt32Value(PLAYER_NEXT_LEVEL_XP);

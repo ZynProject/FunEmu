@@ -374,6 +374,47 @@ void GuildMgr::LoadGuilds()
         }
     }
 
+    //Custom Guild Leveling
+    TC_LOG_INFO("guild", "Loading custom guild level system...");
+    {
+        uint32 oldMSTime = getMSTime();
+
+        QueryResult result = ZynDatabase.Query("SELECT gls.gID, gls.level, gls.current_xp, gxfl.xp_needed FROM guild_level_system gls INNER JOIN guild_xp_for_level gxfl ON gls.level = gxfl.level");
+
+        if (!result)
+        {
+            TC_LOG_INFO("server.loading", ">> Loaded 0 guild level system entrys. DB table `guild_level_system` is empty.");
+        }
+        else
+        {
+            uint32 count = 0;
+            do
+            {
+                Field* fields = result->Fetch();
+                uint32 guildId = fields[0].GetUInt32();
+                if (Guild* guild = GetGuildById(guildId))
+                {
+                    guild->LoadXPFromDB(fields);
+                }
+                else
+                {   //Handling orphan entrys
+                    SQLTransaction trans = ZynDatabase.BeginTransaction();
+
+                    PreparedStatement* stmt = ZynDatabase.GetPreparedStatement(GUILD_XP_DELETE);
+                    uint8 index = 0;
+                    stmt->setUInt32(index, guildId);
+                    trans->Append(stmt);
+                    ZynDatabase.CommitTransaction(trans);
+                }
+                
+                ++count;
+            } while (result->NextRow());
+
+            TC_LOG_INFO("server.loading", ">> Loaded %u guild level system entrys in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+        }
+    }
+
+
     // 9. Validate loaded guild data
     TC_LOG_INFO("guild", "Validating data of loaded guilds...");
     {

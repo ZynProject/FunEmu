@@ -1167,6 +1167,10 @@ bool Guild::Create(Player* pLeader, std::string const& name)
     m_motd = "No message set.";
     m_bankMoney = 0;
     m_createdDate = ::time(NULL);
+    //Custom Guild Leveling
+    custom_level = 1;
+    custom_neededXp = 40000;
+    custom_xp = 0;
     _CreateLogHolders();
 
     TC_LOG_DEBUG("guild", "GUILD: creating guild [%s] for leader %s (%u)",
@@ -1197,6 +1201,17 @@ bool Guild::Create(Player* pLeader, std::string const& name)
     CharacterDatabase.CommitTransaction(trans);
     _CreateDefaultGuildRanks(pLeaderSession->GetSessionDbLocaleIndex()); // Create default ranks
     bool ret = AddMember(m_leaderGuid, GR_GUILDMASTER);                  // Add guildmaster
+
+    trans = ZynDatabase.BeginTransaction();
+
+    stmt = ZynDatabase.GetPreparedStatement(GUILD_XP_ADD);
+    index = 0;
+    stmt->setUInt32(index , m_id);
+    stmt->setUInt8(++index , custom_level);
+    stmt->setInt32(++index , custom_xp);
+    trans->Append(stmt);
+    ZynDatabase.CommitTransaction(trans);
+    
 
     if (ret)
         sScriptMgr->OnGuildCreate(this, pLeader, name);
@@ -2927,4 +2942,56 @@ void Guild::ResetTimes()
 
     // Hack... way to force client to ask for money/slots
     _BroadcastEvent(GE_RANK_UPDATED, 0, "0", GetRankInfo(0)->GetName().c_str());
+}
+
+//Custom Guild Leveling
+void Guild::LoadXPFromDB(Field* fields)
+{
+    custom_level = fields[1].GetUInt8();
+    custom_neededXp = fields[3].GetUInt32();
+    custom_xp = fields[2].GetUInt32();
+}
+
+void Guild::GainXP(uint32 gained, Player* source)
+{
+    if ((source->GetGuildId() != this->m_id) || custom_level >= sWorld->getIntConfig(CONFIG_GUILD_MAXLEVEL))
+        return;
+    uint32 newXp = custom_xp + gained;
+    if (newXp < custom_neededXp)
+    {
+        custom_xp = newXp;
+        UpdateDB();
+    }
+    else
+    {
+        newXp = newXp - custom_neededXp;
+        this->LevelUp(newXp);
+    }
+}
+
+void Guild::LevelUp(uint32 overflow)
+{
+    if ((custom_level + 1) <= sWorld->getIntConfig(CONFIG_GUILD_MAXLEVEL))
+    {
+        ++custom_level;
+        custom_xp = overflow;
+        UpdateDB();
+
+        QueryResult result = ZynDatabase.Query("SELECT gls.gID, gls.level, gls.current_xp, gxfl.xp_needed FROM guild_level_system gls INNER JOIN guild_xp_for_level gxfl ON gls.level = gxfl.level");
+        Field* fields = result->Fetch();
+        LoadXPFromDB(fields);
+    }
+}
+
+void Guild::UpdateDB()
+{
+    SQLTransaction trans = ZynDatabase.BeginTransaction();
+
+    PreparedStatement* stmt = ZynDatabase.GetPreparedStatement(GUILD_XP_UPDATE);
+    uint8 index = 0;
+    stmt->setUInt32(index, custom_level);
+    stmt->setUInt32(++index, custom_xp);
+    stmt->setInt8(++index, m_id);
+    trans->Append(stmt);
+    ZynDatabase.CommitTransaction(trans);
 }

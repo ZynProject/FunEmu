@@ -2838,15 +2838,15 @@ AutoSpellLearn.Enable = 0
 
 #   Donator.XPModifier
 #        Description: Granting Players with the RBAC Permission 1000 an experience modifier
-#        Default:    1.0 - (Same XP as everyone else)
+#        Default:    0.0 - (Same XP as everyone else)
 
-Donator.XPModifier = 1.0
+Donator.XPModifier = 0.0
 
-#   Donator.XPModifier
+#   Donator.RepModifier
 #        Description: Granting Players with the RBAC Permission 1001 an reputation modifier
 #        Default:    1.0 - (Same Reputation as everyone else)
 
-Donator.XPModifier = 1.0
+Donator.RepModifier = 1.0
 
 #   Donator.CraftModifier
 #        Description: Granting Players with the RBAC Permission 1002 an Craft-skill-up modifier
@@ -2859,6 +2859,18 @@ Donator.CraftModifier = 0
 #        Default:    75 - (One skill level full)
 
 Donator.CraftBonus = 75
+
+#	Guild.MaxLevel
+#		Description: Setting the maximal level for guilds
+#		Default:	 0 - Disabled
+
+Guild.MaxLevel = 0
+
+#	Guild.XPModifier
+#		Description: Defines how much of the XP gained by the player will be added to the guild XP
+#		Default:	 0.05 - (5% of the gained XP will be added to the guild XP)
+
+Guild.XPModifier = 0.05
 
 #
 ###################################################################################################

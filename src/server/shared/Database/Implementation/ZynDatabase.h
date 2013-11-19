@@ -36,6 +36,9 @@ typedef DatabaseWorkerPool<ZynDatabaseConnection> ZynDatabaseWorkerPool;
 
 enum ZynDatabaseStatements
 {
+    GUILD_XP_ADD,
+    GUILD_XP_DELETE,
+    GUILD_XP_UPDATE,
     MAX_ZYNDATABASE_STATEMENTS
 };
 

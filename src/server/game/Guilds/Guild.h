@@ -739,6 +739,12 @@ public:
 
     void ResetTimes();
 
+    //Custom Guild Leveling
+    void LoadXPFromDB(Field* fields);
+    void GainXP(uint32 gained, Player* source);
+    void LevelUp(uint32 overflow);
+    void UpdateDB();
+
 protected:
     uint32 m_id;
     std::string m_name;
@@ -746,6 +752,10 @@ protected:
     std::string m_motd;
     std::string m_info;
     time_t m_createdDate;
+    //Custom Guild Leveling
+    uint8 custom_level;
+    uint32 custom_neededXp;
+    uint32 custom_xp;
 
     EmblemInfo m_emblemInfo;
     uint32 m_accountsNumber;

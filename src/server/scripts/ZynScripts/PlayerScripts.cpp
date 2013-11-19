@@ -1,6 +1,7 @@
 #include "ObjectMgr.h"
 #include "Creature.h"
 #include "World.h"
+#include "Guild.h"
 
 class ZynPlayerScripts: public PlayerScript
 {
@@ -89,7 +90,11 @@ class ZynPlayerScripts: public PlayerScript
         */
         void OnGiveXP(Player* player, uint32& amount, Unit* victim)
         {
-            
+            Guild* guild = player->GetGuild();
+            if (!guild)
+                return;
+            uint32 _amount = ceil((amount * sWorld->getFloatConfig(CONFIG_GUILD_XPMODIFIER)));
+            guild->GainXP(_amount, player);
         }
 
         

@@ -1256,9 +1256,11 @@ void World::LoadConfigSettings(bool reload)
     //Zyn Configs
     m_bool_configs[CONFIG_AUTO_SPELL_LEARN_ENABLE] = sConfigMgr->GetBoolDefault("AutoSpellLearn.Enable", false);
     m_float_configs[CONFIG_DONATOR_XPMODIFIER] = sConfigMgr->GetFloatDefault("Donator.XPModifier", 1.0);
-    m_float_configs[CONFIG_DONATOR_REPMODIFIER] = sConfigMgr->GetFloatDefault("Donator.RepModifier", 1.0);
+    m_float_configs[CONFIG_DONATOR_REPMODIFIER] = sConfigMgr->GetFloatDefault("Donator.RepModifier", 0.0);
     m_int_configs[CONFIG_DONATOR_CRAFTMODIFIER] = sConfigMgr->GetIntDefault("Donator.CraftModifier", 0);
     m_int_configs[CONFIG_DONATOR_CRAFTBONUS] = sConfigMgr->GetIntDefault("Donator.CraftBonus", 75);
+    m_int_configs[CONFIG_GUILD_MAXLEVEL] = sConfigMgr->GetIntDefault("Guild.MaxLevel", 0);
+    m_float_configs[CONFIG_GUILD_XPMODIFIER] = sConfigMgr->GetFloatDefault("Guild.XPMidifier", 0.05);
 
     // call ScriptMgr if we're reloading the configuration
     if (reload)

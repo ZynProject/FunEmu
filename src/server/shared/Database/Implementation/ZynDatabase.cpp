@@ -21,4 +21,8 @@ void ZynDatabaseConnection::DoPrepareStatements()
 {
     if (!m_reconnecting)
         m_stmts.resize(MAX_ZYNDATABASE_STATEMENTS);
+
+    PrepareStatement(GUILD_XP_ADD, "INSERT INTO `guild_level_system` (`gID`, `level`, `current_xp`) VALUES (?,?,?)", CONNECTION_ASYNC);
+    PrepareStatement(GUILD_XP_DELETE, "DELETE FROM  `guild_level_system` WHERE gID = ?", CONNECTION_ASYNC);
+    PrepareStatement(GUILD_XP_UPDATE, "UPDATE `guild_level_system` SET `level`= ?, `current_xp`= ? WHERE gID = ?", CONNECTION_ASYNC);
 }
