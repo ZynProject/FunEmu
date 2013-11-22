@@ -782,12 +782,18 @@ void Player::UpdateSpellCritChance(uint32 school)
     // Increase crit from spell crit ratings
     crit += GetRatingBonusValue(CR_CRIT_SPELL);
 
+    if (sWorld->getBoolConfig(CONFIG_STATS_LIMITS_ENABLE))
+        crit = crit > sWorld->getFloatConfig(CONFIG_STATS_LIMITS_CRIT) ? sWorld->getFloatConfig(CONFIG_STATS_LIMITS_CRIT) : crit;
+
     // Store crit value
     SetFloatValue(PLAYER_SPELL_CRIT_PERCENTAGE1 + school, crit);
 }
 
 void Player::UpdateArmorPenetration(int32 amount)
 {
+    if (sWorld->getBoolConfig(CONFIG_STATS_LIMITS_ENABLE))
+        amount = amount > sWorld->getFloatConfig(CONFIG_STATS_LIMITS_ARMOR_PENETRATION) ? sWorld->getFloatConfig(CONFIG_STATS_LIMITS_ARMOR_PENETRATION) : amount;
+
     // Store Rating Value
     SetUInt32Value(PLAYER_FIELD_COMBAT_RATING_1 + CR_ARMOR_PENETRATION, amount);
 }

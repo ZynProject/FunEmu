@@ -2040,6 +2040,7 @@ Stats.Limits.Dodge = 95.0
 Stats.Limits.Parry = 95.0
 Stats.Limits.Block = 95.0
 Stats.Limits.Crit  = 95.0
+Stats.Limits.ArmorPenetration = 95.0
 
 #
 ###################################################################################################
