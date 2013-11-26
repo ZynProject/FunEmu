@@ -2861,11 +2861,17 @@ Donator.CraftModifier = 0
 
 Donator.CraftBonus = 75
 
+#	Guild.Leveling.Enable
+#		Description: Enables/Disables guild leveling
+#		Default:	 1 - Enabled
+
+Guild.Leveling.Enable = 1
+
 #	Guild.MaxLevel
 #		Description: Setting the maximal level for guilds
-#		Default:	 0 - Disabled
+#		Default:	 25 - Standart max level is 25
 
-Guild.MaxLevel = 0
+Guild.MaxLevel = 25
 
 #	Guild.XPModifier
 #		Description: Defines how much of the XP gained by the player will be added to the guild XP

@@ -379,7 +379,7 @@ void GuildMgr::LoadGuilds()
     {
         uint32 oldMSTime = getMSTime();
 
-        QueryResult result = ZynDatabase.Query("SELECT gls.gID, gls.level, gls.current_xp, gxfl.xp_needed FROM guild_level_system gls INNER JOIN guild_xp_for_level gxfl ON gls.level = gxfl.level");
+        QueryResult result = ZynDatabase.Query("SELECT gID, level, current_xp FROM guild_level_system");
 
         if (!result)
         {

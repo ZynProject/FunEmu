@@ -1259,7 +1259,8 @@ void World::LoadConfigSettings(bool reload)
     m_float_configs[CONFIG_DONATOR_REPMODIFIER] = sConfigMgr->GetFloatDefault("Donator.RepModifier", 0.0f);
     m_int_configs[CONFIG_DONATOR_CRAFTMODIFIER] = sConfigMgr->GetIntDefault("Donator.CraftModifier", 0);
     m_int_configs[CONFIG_DONATOR_CRAFTBONUS] = sConfigMgr->GetIntDefault("Donator.CraftBonus", 75);
-    m_int_configs[CONFIG_GUILD_MAXLEVEL] = sConfigMgr->GetIntDefault("Guild.MaxLevel", 0);
+    m_bool_configs[CONFIG_GUILD_LEVELING_ENABLE] = sConfigMgr->GetBoolDefault("Guild.Leveling.Enable", true);
+    m_int_configs[CONFIG_GUILD_MAXLEVEL] = sConfigMgr->GetIntDefault("Guild.MaxLevel", 25);
     m_float_configs[CONFIG_GUILD_XPMODIFIER] = sConfigMgr->GetFloatDefault("Guild.XPModifier", 0.05f);
     m_float_configs[CONFIG_STATS_LIMITS_ARMOR_PENETRATION] = sConfigMgr->GetFloatDefault("Stats.Limits.ArmorPenetration", 95.0f);
 
@@ -1745,6 +1746,9 @@ void World::SetInitialWorldSettings()
 
     TC_LOG_INFO("server.loading", "Loading Donator Port Locations...");
     sObjectMgr->LoadDonatorPort();
+
+    TC_LOG_INFO("server.loading", "Loading needed guild xp...");
+    sObjectMgr->LoadGuildLevelingNeededXp();
 
     ///- Initialize game time and timers
     TC_LOG_INFO("server.loading", "Initialize game time and timers");

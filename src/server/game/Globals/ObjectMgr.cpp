@@ -9111,3 +9111,27 @@ void ObjectMgr::LoadPlayerCustomStats()
 
     TC_LOG_INFO("server.loading", ">> Loaded %u Custom Player Stats in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
  }
+
+void ObjectMgr::LoadGuildLevelingNeededXp()
+{
+    uint32 oldMSTime = getMSTime();
+
+    QueryResult result = ZynDatabase.Query("SELECT `level`, `xp_needed` FROM guild_xp_for_level");
+
+    if (!result)
+    {
+        TC_LOG_INFO("server.loading", ">> Loaded 0 needed guild xp. DB table `guild_xp_for_level` is empty.");
+        return;
+    }
+
+    uint32 count = 0;
+
+    do
+    {
+        Field* fields = result->Fetch();
+        _guildLevelNeededXp[fields[0].GetUInt8()] = fields[1].GetUInt32();
+        ++count;
+    } while (result->NextRow());
+
+    TC_LOG_INFO("server.loading", ">> Loaded %u needed guild xp in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+}

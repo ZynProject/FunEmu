@@ -168,6 +168,8 @@ struct DonatorPortTPL
 
 typedef UNORDERED_MAP<uint32, DonatorPortTPL> DonatorPortContainer;
 
+typedef UNORDERED_MAP<uint8,uint32> GuildLevelNeededXPContainer;
+
 enum ScriptsType
 {
     SCRIPTS_FIRST = 1,
@@ -818,6 +820,11 @@ class ObjectMgr
             return _donatorPort;
         }
 
+        GuildLevelNeededXPContainer GetGuildLevelNeededXP()
+        {
+            return _guildLevelNeededXp;
+        }
+
         uint32 GetNearestTaxiNode(float x, float y, float z, uint32 mapid, uint32 team);
         void GetTaxiPath(uint32 source, uint32 destination, uint32 &path, uint32 &cost);
         uint32 GetTaxiMountDisplayId(uint32 id, uint32 team, bool allowed_alt_team = false);
@@ -955,6 +962,7 @@ class ObjectMgr
         void LoadAreaCustomFlags();
         void LoadPlayerCustomStats();
         void LoadDonatorPort();
+        void LoadGuildLevelingNeededXp();
 
         CreatureSpecialRewards GetSpecialReward(uint32 entry)
         {
@@ -1384,6 +1392,7 @@ class ObjectMgr
         PointOfInterestContainer _pointsOfInterestStore;
         AreaCustomFlagContainer _areaCustomFlags;
         DonatorPortContainer _donatorPort;
+        GuildLevelNeededXPContainer _guildLevelNeededXp;
 
         QuestPOIContainer _questPOIStore;
 

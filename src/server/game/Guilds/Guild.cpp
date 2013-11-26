@@ -1169,7 +1169,6 @@ bool Guild::Create(Player* pLeader, std::string const& name)
     m_createdDate = ::time(NULL);
     //Custom Guild Leveling
     custom_level = 1;
-    custom_neededXp = 40000;
     custom_xp = 0;
     _CreateLogHolders();
 
@@ -2948,38 +2947,31 @@ void Guild::ResetTimes()
 void Guild::LoadXPFromDB(Field* fields)
 {
     custom_level = fields[1].GetUInt8();
-    custom_neededXp = fields[3].GetUInt32();
     custom_xp = fields[2].GetUInt32();
 }
 
 void Guild::GainXP(uint32 gained, Player* source)
 {
-    if ((source->GetGuildId() != this->m_id) || custom_level >= sWorld->getIntConfig(CONFIG_GUILD_MAXLEVEL))
+    if (!sWorld->getBoolConfig(CONFIG_GUILD_LEVELING_ENABLE))
         return;
-    uint32 newXp = custom_xp + gained;
-    if (newXp < custom_neededXp)
-    {
-        custom_xp = newXp;
+    if (source->GetGuildId() != this->m_id)
+        return;
+    if (custom_level+1 > sWorld->getIntConfig(CONFIG_GUILD_MAXLEVEL))
+        return;
+    custom_xp += gained;
+    GuildLevelNeededXPContainer container = sObjectMgr->GetGuildLevelNeededXP();
+    if (custom_xp < container[custom_level])
         UpdateDB();
-    }
     else
-    {
-        newXp = newXp - custom_neededXp;
-        this->LevelUp(newXp);
-    }
+        this->LevelUp();
 }
 
-void Guild::LevelUp(uint32 overflow)
+void Guild::LevelUp()
 {
-    if ((custom_level + 1) <= sWorld->getIntConfig(CONFIG_GUILD_MAXLEVEL))
+    if (custom_level < sWorld->getIntConfig(CONFIG_GUILD_MAXLEVEL)+1)
     {
         ++custom_level;
-        custom_xp = overflow;
         UpdateDB();
-
-        QueryResult result = ZynDatabase.Query("SELECT gls.gID, gls.level, gls.current_xp, gxfl.xp_needed FROM guild_level_system gls INNER JOIN guild_xp_for_level gxfl ON gls.level = gxfl.level");
-        Field* fields = result->Fetch();
-        LoadXPFromDB(fields);
     }
 }
 

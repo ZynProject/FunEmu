@@ -5,6 +5,12 @@
 #include "Group.h"
 #include "RBAC.h"
 #include "Language.h"
+#include "Guild.h"
+#include "AccountMgr.h"
+#include "World.h"
+#include "Player.h"
+#include "Opcodes.h"
+
 
 class ZynCommandScripts : public CommandScript
 {
@@ -14,24 +20,30 @@ public:
     {
         static ChatCommand DonatorCommandTable[] =
         {
-            { "port", rbac::RBAC_PERM_COMMAND_DONATOR_PORT, false, &HandleZynPortCommand, "", NULL },
-            { "craftbonus", rbac::RBAC_PERM_COMMAND_DONATOR_CRAFTBONUS, false, &HandleZynCraftBonusCommand, "", NULL },
+            { "port", rbac::RBAC_PERM_COMMAND_DONATOR_PORT, false, &HandleDonatorPortCommand, "", NULL },
+            { "craftbonus", rbac::RBAC_PERM_COMMAND_DONATOR_CRAFTBONUS, false, &HandleDonatorCraftBonusCommand, "", NULL },
             { NULL, 0, false, NULL, "", NULL }
         };
+
+        static ChatCommand GuildCommandTable[] =
+        {
+            { "info", rbac::RBAC_PERM_COMMAND_GXP_INFO, false, &HandleGuildInfoCommand, "", NULL },
+            { NULL, 0, false, NULL, "", NULL }
+        };
+
         static ChatCommand ZynCommandTable[] =
         {
             { "donator", rbac::RBAC_PERM_COMMAND_DONATOR, true, NULL, "", DonatorCommandTable },
+            { "gxp", rbac::RBAC_PERM_COMMAND_GXP, true, NULL, "", GuildCommandTable },
             { NULL, 0, false, NULL, "", NULL }
         };
         return ZynCommandTable;
     }
 
-    static bool HandleZynPortCommand(ChatHandler* handler, const char* args)
+    static bool HandleDonatorPortCommand(ChatHandler* handler, const char* args)
     {   
         Player* me = handler->GetSession()->GetPlayer();
         DonatorPortTPL const* tele = handler->extractDonatorPortFromLink((char*)args);
-        MapEntry const* map = sMapStore.LookupEntry(tele->mapId);
-       
         //Check if command was typed correctly
         if (!tele)
         {
@@ -39,7 +51,8 @@ public:
             handler->SetSentErrorMessage(true);
             return false;
         }
-
+        MapEntry const* map = sMapStore.LookupEntry(tele->mapId);
+      
         //Command unuseable in Combat       
         if (me->IsInCombat())
         {
@@ -67,8 +80,8 @@ public:
             return false;
         }
         //Command unuseable while dead
-        if (me->isDead()){
-            handler->PSendSysMessage("You can't do this while being dead.");
+        if (!me->IsAlive()){
+            //handler->PSendSysMessage("You can't do this while being dead.");
             return false;
         }
         //saved player
@@ -77,7 +90,8 @@ public:
         me->TeleportTo(tele->mapId, tele->position_x, tele->position_y, tele->position_z, tele->orientation);
         return true;
     }
-    static bool HandleZynCraftBonusCommand(ChatHandler* handler,const char* args)
+
+    static bool HandleDonatorCraftBonusCommand(ChatHandler* handler,const char* args)
     {
         Player* me = handler->GetSession()->GetPlayer();
         uint32 newSkill = 0;
@@ -103,6 +117,28 @@ public:
                 
         }
         me->GetSession()->GetRBACData()->RevokePermission(rbac::RBAC_PERM_COMMAND_DONATOR_CRAFTBONUS, -1);
+        return true;
+    }
+
+    static bool HandleGuildInfoCommand(ChatHandler* handler, const char* args)
+    {
+        Player* me = handler->GetSession()->GetPlayer();
+        Guild* guild = me->GetGuild();
+        if (!guild)
+        {
+            handler->SendSysMessage("Sie sind in keiner Gilde.");
+            return false;
+        }    
+        GuildLevelNeededXPContainer container = sObjectMgr->GetGuildLevelNeededXP();
+        uint8 level = guild->GetLevel();
+        uint32 Xp = guild->GetXp();
+        uint32 neededXP = container[level];
+        float percent = neededXP*10 / Xp;
+        uint32 out = ceil(percent);
+        handler->SendSysMessage("==============");
+        handler->PSendSysMessage("Das Gildenlevel ist %u.",level);
+        handler->PSendSysMessage("Die Gilde hat %u/%u ( %u Prozent) Erfahrungspunkte.", Xp, neededXP, out);
+        handler->SendSysMessage("==============");
         return true;
     }
 };

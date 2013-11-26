@@ -742,8 +742,10 @@ public:
     //Custom Guild Leveling
     void LoadXPFromDB(Field* fields);
     void GainXP(uint32 gained, Player* source);
-    void LevelUp(uint32 overflow);
+    void LevelUp();
     void UpdateDB();
+    uint8 GetLevel(){ return custom_level; };
+    uint32 GetXp(){ return custom_xp; };
 
 protected:
     uint32 m_id;
@@ -754,7 +756,6 @@ protected:
     time_t m_createdDate;
     //Custom Guild Leveling
     uint8 custom_level;
-    uint32 custom_neededXp;
     uint32 custom_xp;
 
     EmblemInfo m_emblemInfo;
