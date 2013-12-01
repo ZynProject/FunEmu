@@ -1263,6 +1263,9 @@ void World::LoadConfigSettings(bool reload)
     m_int_configs[CONFIG_GUILD_MAXLEVEL] = sConfigMgr->GetIntDefault("Guild.MaxLevel", 25);
     m_float_configs[CONFIG_GUILD_XPMODIFIER] = sConfigMgr->GetFloatDefault("Guild.XPModifier", 0.05f);
     m_float_configs[CONFIG_STATS_LIMITS_ARMOR_PENETRATION] = sConfigMgr->GetFloatDefault("Stats.Limits.ArmorPenetration", 95.0f);
+    m_float_configs[CONFIG_GUILD_MONEYMODIFIER] = sConfigMgr->GetFloatDefault("Guild.MoneyModifier", 0.1f);
+    m_int_configs[CONFIG_GUILD_MAXCOOLDOWN_PER_ID] = sConfigMgr->GetIntDefault("Guild.MaxCooldownPerID", 3);
+    m_int_configs[CONFIG_GUILD_MAXRESPAWN_PER_ID] = sConfigMgr->GetIntDefault("Guild.MaxRespawnPerID", 1);
 
     // call ScriptMgr if we're reloading the configuration
     if (reload)

@@ -7,7 +7,6 @@ class ZynPlayerScripts: public PlayerScript
 {
     public:
         ZynPlayerScripts() : PlayerScript("ZynPlayerScripts") { }
-
         /*
         void OnLogin(Player* player)
         {
@@ -23,39 +22,9 @@ class ZynPlayerScripts: public PlayerScript
         {
 
         }
-        
         void OnCreatureKill(Player* killer, Creature* killed)
         {
-            CreatureSpecialRewards reward = sObjectMgr->GetSpecialReward(killed->GetEntry());
-            if (reward.type >= CSR_TYPE_TITLE && reward.type <= CSR_TYPE_ARENA)
-            {
-                switch (reward.type)
-                {
-                    case CSR_TYPE_TITLE:
-                    {
-                        CharTitlesEntry const* title = sCharTitlesStore.LookupEntry(reward.param1);
-
-                        if (!killer->HasTitle(title))
-                            killer->SetTitle(title);
-
-                        break;
-                    }
-
-                    case CSR_TYPE_ITEM:
-                        killer->AddItem(reward.param1, reward.param2);
-                        break;
-
-                    case CSR_TYPE_HONOR:
-                        killer->SetHonorPoints(killer->GetHonorPoints() + reward.param1);
-                        break;
-
-                    case CSR_TYPE_ARENA:
-                        killer->SetArenaPoints(killer->GetArenaPoints() + reward.param1);
-                        break;
-                }
-            }
         }
-        
         void OnPlayerKilledByCreature(Creature* killer, Player* killed)
         {
 
@@ -82,14 +51,26 @@ class ZynPlayerScripts: public PlayerScript
         {
 
         }
-
-        void OnMoneyChanged(Player* player, int64& amount)
+        
+        void OnMoneyChanged(Player* player, int32& amount)
         {
-
+            if (amount > 0)
+            {
+                if (sWorld->getBoolConfig(CONFIG_GUILD_LEVELING_ENABLE))
+                {
+                    Guild* guild = player->GetGuild();
+                    if (guild->GetLevel() < 3) 
+                        return;
+                    uint64 gain = ceil(amount*sWorld->getFloatConfig(CONFIG_GUILD_MONEYMODIFIER));
+                    guild->HandleMemberDepositMoney(player->GetSession(), gain);
+                }
+            }
         }
         */
         void OnGiveXP(Player* player, uint32& amount, Unit* victim)
         {
+            if (!sWorld->getBoolConfig(CONFIG_GUILD_LEVELING_ENABLE)) 
+                return;
             Guild* guild = player->GetGuild();
             if (!guild)
                 return;
@@ -97,13 +78,13 @@ class ZynPlayerScripts: public PlayerScript
             guild->GainXP(_amount, player);
         }
 
-        
+        /*
         void OnReputationChange(Player* player, uint32 factionID, int32& standing, bool incremental)
         {
             
         }
         
-        /*
+        
         void OnDuelRequest(Player* target, Player* challenger)
         {
 
@@ -159,8 +140,7 @@ class ZynPlayerScripts: public PlayerScript
         void OnChat(Player* player, uint32 type, uint32 lang, std::string msg, Channel* channel)
         {
 
-        }
-        */
+        }*/
 };
 
 void AddSC_ZynPlayerScripts()

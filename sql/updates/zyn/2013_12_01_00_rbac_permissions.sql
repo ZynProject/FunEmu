@@ -1,0 +1,12 @@
+INSERT INTO `rbac_permissions` (`id`, `name`) VALUES (1205, 'Command: gxp mobil');
+INSERT INTO `rbac_permissions` (`id`, `name`) VALUES (1206, 'Command: gxp buff');
+INSERT INTO `rbac_permissions` (`id`, `name`) VALUES (1207, 'Command: gxp summon');
+INSERT INTO `rbac_permissions` (`id`, `name`) VALUES (1208, 'Command: gxp rezz');
+INSERT INTO `rbac_permissions` (`id`, `name`) VALUES (1209, 'Command: gxp cooldown');
+INSERT INTO `rbac_permissions` (`id`, `name`) VALUES (1210, 'Command: gxp respawn');
+INSERT INTO `rbac_linked_permissions` (`id`, `linkedId`) VALUES (195, 1205);
+INSERT INTO `rbac_linked_permissions` (`id`, `linkedId`) VALUES (195, 1206);
+INSERT INTO `rbac_linked_permissions` (`id`, `linkedId`) VALUES (195, 1207);
+INSERT INTO `rbac_linked_permissions` (`id`, `linkedId`) VALUES (195, 1208);
+INSERT INTO `rbac_linked_permissions` (`id`, `linkedId`) VALUES (195, 1209);
+INSERT INTO `rbac_linked_permissions` (`id`, `linkedId`) VALUES (195, 1210);

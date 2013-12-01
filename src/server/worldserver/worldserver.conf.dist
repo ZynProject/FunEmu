@@ -2879,5 +2879,23 @@ Guild.MaxLevel = 25
 
 Guild.XPModifier = 0.05
 
+#	Guild.MoneyModifier
+#		Description: Defines how much of the money gained by the player will be added to the guild money
+#		Default:	 0.1 - (10% of the gained Money will be added to the guild money)
+
+Guild.MoneyModifier = 0.1
+
+#	Guild.MaxCooldownPerID
+#		Description: Defines how often the cooldown command can be used per ID
+#		Default:	 3 - (3 times per ID)
+
+Guild.MaxCooldownPerID = 3
+
+#	Guild.MaxRespawnPerID
+#		Description: Defines how often the respawn command can be used per ID
+#		Default:	 1 - (1 time per ID)
+
+Guild.MaxRespawnPerID = 1
+
 #
 ###################################################################################################

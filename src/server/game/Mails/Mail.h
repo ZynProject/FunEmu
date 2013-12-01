@@ -59,7 +59,7 @@ enum MailStationery
     MAIL_STATIONERY_AUCTION = 62,
     MAIL_STATIONERY_VAL     = 64,                           // Valentine
     MAIL_STATIONERY_CHR     = 65,                           // Christmas
-    MAIL_STATIONERY_ORP     = 67                            // Orphan
+    MAIL_STATIONERY_ORP     = 67,                           // Orphan
 };
 
 enum MailState
