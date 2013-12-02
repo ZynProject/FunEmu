@@ -334,11 +334,17 @@ public:
             handler->SendSysMessage("Ihr seid in keiner Gruppe.");
             return false;
         }
-        if (me->GetGUID() != group->GetLeaderGUID()){
+        if (me->GetGUID() != group->GetLeaderGUID())
+        {
             handler->SendSysMessage("Ihr seid nicht der Gruppenleiter.");
             return false;
         }
         InstanceGroupBind* ID = group->GetBoundInstance(me->GetMap());
+        if (!ID)
+        {
+            handler->SendSysMessage("Ihr seid dieser Instanz nicht zugeweisen.");
+            return false;
+        }
         if (ID->cooldown == 0)
         {
             handler->SendSysMessage("Ihr habt bereits alle Cooldown Möglichkeiten verbraucht.");
@@ -382,6 +388,11 @@ public:
             return false;
         }
         InstanceGroupBind* ID = group->GetBoundInstance(me->GetMap());
+        if (!ID)
+        {
+            handler->SendSysMessage("Ihr seid dieser Instanz nicht zugeweisen.");
+            return false;
+        }
         if (ID->respawn == 0)
         {
             handler->SendSysMessage("Ihr habt bereits alle Respawn Möglichkeiten verbraucht.");
