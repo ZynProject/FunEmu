@@ -202,16 +202,25 @@ public:
         {
             me = target->GetSource();
             //INSERT BUFFLIST HERE:
-            me->CastSpell(me, 48469);   //Mark of the Wild
-            me->CastSpell(me, 58054);   //Blessing of Kings
-            me->CastSpell(me, 58921);   //Machtwort - Seelenstärke
-            me->CastSpell(me, 48073);   //Machtwort - Willensstärke
-            me->CastSpell(me, 42999);   //Arcane Intelligence
-            me->CastSpell(me, 48102);   //Scroll of Stamina
-            me->CastSpell(me, 48104);   //Scroll of Spirit
-            me->CastSpell(me, 58451);   //Scroll of Agility
-            me->CastSpell(me, 58499);   //Scroll of Strength
-            me->CastSpell(me, 48100);   //Scroll of Intelligence
+            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
+            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
+            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
+            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
+            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
+            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
+            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
+            /*
+            me->CastSpell(me, 48469, true);   //Mark of the Wild
+            me->CastSpell(me, 58054, true);   //Blessing of Kings
+            me->CastSpell(me, 58921, true);   //Machtwort - Seelenstärke
+            me->CastSpell(me, 48073, true);   //Machtwort - Willensstärke
+            me->CastSpell(me, 42999, true);   //Arcane Intelligence
+            me->CastSpell(me, 48102, true);   //Scroll of Stamina
+            me->CastSpell(me, 48104, true);   //Scroll of Spirit
+            me->CastSpell(me, 58451, true);   //Scroll of Agility
+            me->CastSpell(me, 58499, true);   //Scroll of Strength
+            me->CastSpell(me, 48100, true);   //Scroll of Intelligence
+            */
             //END BUFFLIST
             target = target->next();
         }
@@ -288,6 +297,7 @@ public:
         {
             me = target->GetSource();
             allDead = me->isDead();
+            target = target->next();
         }
         if (!allDead)
         {
@@ -349,6 +359,7 @@ public:
         {
             me = target->GetSource();
             me->RemoveArenaSpellCooldowns();
+            target = target->next();
         }
         return true;
     }
