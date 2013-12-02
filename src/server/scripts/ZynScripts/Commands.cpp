@@ -224,6 +224,7 @@ public:
             return false;
         Player* me = handler->GetSession()->GetPlayer();
         Guild* guild = me->GetGuild();
+        Group* group = me->GetGroup();
         if (!guild)
         {
             handler->SendSysMessage("Sie sind in keiner Gilde.");
@@ -234,7 +235,6 @@ public:
             handler->SendSysMessage("Ihr Gilde hat nicht das benötigte Level.");
             return false;
         }
-        Group* group = me->GetGroup();
         if (!group)
         {
             handler->SendSysMessage("Ihr seid in keiner Gruppe.");
@@ -243,6 +243,10 @@ public:
         if (me->GetGUID() != group->GetLeaderGUID()){
             handler->SendSysMessage("Ihr seid nicht der Gruppenleiter.");
             return false;
+        }
+        if (me->IsInCombat())
+        {
+            handler->SendSysMessage("Ihr könnt das nicht im Kampf benutzten.");
         }
         GroupReference* target = group->GetFirstMember();
         WorldLocation summon = WorldLocation(me->GetMapId(), me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation());
@@ -261,6 +265,7 @@ public:
             return false;
         Player* me = handler->GetSession()->GetPlayer();
         Guild* guild = me->GetGuild();
+        Group* group = me->GetGroup();
         if (!guild)
         {
             handler->SendSysMessage("Sie sind in keiner Gilde.");
@@ -271,7 +276,6 @@ public:
             handler->SendSysMessage("Ihr Gilde hat nicht das benötigte Level.");
             return false;
         }
-        Group* group = me->GetGroup();
         if (!group)
         {
             handler->SendSysMessage("Ihr seid in keiner Gruppe.");
@@ -306,7 +310,7 @@ public:
         while (target)
         {
             me = target->GetSource();
-            me->setResurrectRequestData(me->GetGUID(), me->GetMapId(), me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetMaxHealth(), me->GetMaxPower(POWER_MANA));
+            me->ResurrectPlayer(1.0f);
             target = target->next();
         }
         return true;
@@ -318,6 +322,7 @@ public:
             return false;
         Player* me = handler->GetSession()->GetPlayer();
         Guild* guild = me->GetGuild();
+        Group* group = me->GetGroup();
         if (!guild)
         {
             handler->SendSysMessage("Sie sind in keiner Gilde.");
@@ -328,7 +333,6 @@ public:
             handler->SendSysMessage("Ihr Gilde hat nicht das benötigte Level.");
             return false;
         }
-        Group* group = me->GetGroup();
         if (!group)
         {
             handler->SendSysMessage("Ihr seid in keiner Gruppe.");
@@ -405,6 +409,7 @@ public:
             return false;
         }
         target->Respawn();
+        ID->respawn--;
         return true;
     }
 };
