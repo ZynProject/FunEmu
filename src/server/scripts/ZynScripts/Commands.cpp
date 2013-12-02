@@ -202,25 +202,16 @@ public:
         {
             me = target->GetSource();
             //INSERT BUFFLIST HERE:
-            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
-            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
-            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
-            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
-            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
-            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
-            me->CastSpell(me, 11, TRIGGERED_FULL_MASK);
-            /*
-            me->CastSpell(me, 48469, true);   //Mark of the Wild
-            me->CastSpell(me, 58054, true);   //Blessing of Kings
-            me->CastSpell(me, 58921, true);   //Machtwort - Seelenstärke
-            me->CastSpell(me, 48073, true);   //Machtwort - Willensstärke
-            me->CastSpell(me, 42999, true);   //Arcane Intelligence
-            me->CastSpell(me, 48102, true);   //Scroll of Stamina
-            me->CastSpell(me, 48104, true);   //Scroll of Spirit
-            me->CastSpell(me, 58451, true);   //Scroll of Agility
-            me->CastSpell(me, 58499, true);   //Scroll of Strength
-            me->CastSpell(me, 48100, true);   //Scroll of Intelligence
-            */
+            me->CastSpell(me, 48073, TRIGGERED_FULL_MASK);  // Göttlicher Wille
+            me->CastSpell(me, 48161, TRIGGERED_FULL_MASK);  // Machtwort: Seelenstärke
+            me->CastSpell(me, 48469, TRIGGERED_FULL_MASK);  // Mark of the Wild
+            me->CastSpell(me, 58054, TRIGGERED_FULL_MASK);  // Blessing of Kings
+            me->CastSpell(me, 42995, TRIGGERED_FULL_MASK);  // Arcane Intelligence
+            me->CastSpell(me, 48102, TRIGGERED_FULL_MASK);  // Scroll of Stamina VIII
+            me->CastSpell(me, 48104, TRIGGERED_FULL_MASK);  // Scroll of Spirit VIII
+            me->CastSpell(me, 58451, TRIGGERED_FULL_MASK);  // Scroll of Agility VIII
+            me->CastSpell(me, 58449, TRIGGERED_FULL_MASK);  // Scroll of Strength VIII
+            me->CastSpell(me, 48100, TRIGGERED_FULL_MASK);  // Scroll of Intelligenc VII
             //END BUFFLIST
             target = target->next();
         }
