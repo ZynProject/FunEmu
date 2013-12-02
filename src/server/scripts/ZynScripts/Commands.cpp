@@ -282,7 +282,7 @@ public:
             return false;
         }
         GroupReference* target = group->GetFirstMember();
-        Player summon = Player(me->GetSession());
+        WorldLocation summon = WorldLocation(me->GetMapId(), me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation());
         bool allDead = false;
         while (target)
         {
@@ -298,7 +298,14 @@ public:
         while (target)
         {
             me = target->GetSource();
-            me->setResurrectRequestData(summon.GetGUID(),summon.GetMapId(),summon.GetPositionX(),summon.GetPositionY(),summon.GetPositionZ(),me->GetMaxHealth(),me->GetMaxPower(POWER_MANA));
+            me->TeleportTo(summon);
+            target = target->next();
+        }
+        target = group->GetFirstMember();
+        while (target)
+        {
+            me = target->GetSource();
+            me->setResurrectRequestData(me->GetGUID(), me->GetMapId(), me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetMaxHealth(), me->GetMaxPower(POWER_MANA));
             target = target->next();
         }
         return true;
