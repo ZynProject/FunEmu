@@ -146,6 +146,7 @@ typedef UNORDERED_MAP<uint32, GameTele > GameTeleContainer;
 
 struct AreaCustomFlagTPL
 {
+    uint32 map;
     float x;
     float y;
     float z;

@@ -684,6 +684,8 @@ class Creature : public Unit, public GridObject<Creature>, public MapObject
         void FocusTarget(Spell const* focusSpell, WorldObject const* target);
         void ReleaseFocus(Spell const* focusSpell);
 
+        void UpdateAreaCustomFlags();
+
     protected:
         bool CreateFromProto(uint32 guidlow, uint32 Entry, uint32 vehId, uint32 team, const CreatureData* data = NULL);
         bool InitEntry(uint32 entry, uint32 team=ALLIANCE, const CreatureData* data=NULL);

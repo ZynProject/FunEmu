@@ -8964,7 +8964,7 @@ void ObjectMgr::LoadAreaCustomFlags()
 {
     uint32 oldMSTime = getMSTime();
 
-    QueryResult result = ZynDatabase.Query("SELECT id, flag, x, y, z, radius FROM area_custom_flag");
+    QueryResult result = ZynDatabase.Query("SELECT id, flag,mapId, x, y, z, radius FROM area_custom_flag");
 
     if (!result)
     {
@@ -8980,10 +8980,11 @@ void ObjectMgr::LoadAreaCustomFlags()
 
         AreaCustomFlagTPL container;
         container.flag = fields[1].GetUInt8();
-        container.x = fields[2].GetFloat();
-        container.y = fields[3].GetFloat();
-        container.z = fields[4].GetFloat();
-        container.radius = fields[5].GetUInt32();
+        container.map = fields[2].GetUInt32();
+        container.x = fields[3].GetFloat();
+        container.y = fields[4].GetFloat();
+        container.z = fields[5].GetFloat();
+        container.radius = fields[6].GetUInt32();
 
         _areaCustomFlags.push_back(container);
 

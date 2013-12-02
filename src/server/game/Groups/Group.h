@@ -149,12 +149,12 @@ class Roll : public LootValidatorRef
 struct InstanceGroupBind
 {
     InstanceSave* save;
-    uint8 cooldown = sWorld->getIntConfig(CONFIG_GUILD_MAXCOOLDOWN_PER_ID);
-    uint8 respawn = sWorld->getIntConfig(CONFIG_GUILD_MAXRESPAWN_PER_ID);
+    uint8 cooldown;
+    uint8 respawn;
     bool perm;
     /* permanent InstanceGroupBinds exist if the leader has a permanent
        PlayerInstanceBind for the same instance. */
-    InstanceGroupBind() : save(NULL), perm(false) { }
+    InstanceGroupBind() : save(NULL), cooldown(sWorld->getIntConfig(CONFIG_GUILD_MAXCOOLDOWN_PER_ID)), respawn(sWorld->getIntConfig(CONFIG_GUILD_MAXRESPAWN_PER_ID)), perm(false) { }
 };
 
 /** request member stats checken **/
