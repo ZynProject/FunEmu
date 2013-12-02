@@ -245,7 +245,7 @@ public:
             return false;
         }
         GroupReference* target = group->GetFirstMember();
-        Player summon = Player(me->GetSession());
+        WorldLocation summon = WorldLocation(me->GetMapId(), me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation());
         while (target)
         {
             me = target->GetSource();
